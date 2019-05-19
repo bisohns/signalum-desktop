@@ -5,8 +5,12 @@ A Desktop application for the Signalyze CLI Tool
 ## Development
 
 ### Installation
-- setup virtualenv and install requirements
-- After modifying any .ui file run the `make ui_files` command to update
+
+```bash
+  make install
+```
+
+After modifying any `.ui` file run the `make ui_files` command to update
 
 
 
@@ -14,3 +18,4 @@ A Desktop application for the Signalyze CLI Tool
 - [ ] Integrate signalum Bluetooth
 - [ ] Integrate Signalum Wifi
 - [ ] Add Deployment for Linux and MAC
+- [ ] Add Tests and Documentation

@@ -3,4 +3,6 @@ ui_files:
 	scripts/build_ui_files.sh
 
 install:
-	@echo "Hello installation in process"
+	sudo apt-get install bluetooth libbluetooth-dev
+	pip install -r requirements.txt
+	@echo "installation complete"
