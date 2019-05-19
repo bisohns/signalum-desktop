@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>828</width>
+    <width>843</width>
     <height>433</height>
    </rect>
   </property>
@@ -85,30 +85,48 @@
            <property name="text">
             <string>Vendor</string>
            </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
           </item>
           <item row="1" column="0">
            <property name="text">
             <string>MAC Address</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
            </property>
           </item>
           <item row="2" column="0">
            <property name="text">
             <string>API</string>
            </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
           </item>
           <item row="3" column="0">
            <property name="text">
             <string>Revision</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
            </property>
           </item>
           <item row="4" column="0">
            <property name="text">
             <string>Services</string>
            </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
           </item>
           <item row="5" column="0">
            <property name="text">
             <string>Class</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
            </property>
           </item>
           <item row="6" column="0">
@@ -247,13 +265,6 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <widget class="QDialogButtonBox" name="buttonBox">
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -261,7 +272,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>828</width>
+     <width>843</width>
      <height>23</height>
     </rect>
    </property>

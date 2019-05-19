@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_files/Signalum.ui'
+# Form implementation generated from reading ui file './signalum.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.2
+# Created by: PyQt5 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(828, 433)
+        MainWindow.resize(843, 433)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -33,7 +34,8 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setVerticalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget_2.setVerticalHeaderItem(3, item) item = QtWidgets.QTableWidgetItem()
+        self.tableWidget_2.setVerticalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setVerticalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setVerticalHeaderItem(5, item)
@@ -44,16 +46,22 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(0, 0, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(1, 0, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(2, 0, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(3, 0, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(4, 0, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget_2.setItem(5, 0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setItem(6, 0, item)
@@ -126,13 +134,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.verticalLayout_4)
         self.tabWidget.addTab(self.tab_4, "")
         self.verticalLayout.addWidget(self.tabWidget)
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.verticalLayout.addWidget(self.buttonBox)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 828, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 843, 23))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -190,4 +194,5 @@ class Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "WiFi"))
         self.radioButton_2.setText(_translate("MainWindow", "Bluetooth"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Options"))
+
 

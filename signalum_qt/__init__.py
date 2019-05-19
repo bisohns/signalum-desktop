@@ -1,13 +1,15 @@
 #import system files
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from qt import signalum
 
 
 
-class App(QtWidgets.QMainWindow):
+class App(QtWidgets.QMainWindow, signalum.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
+        self.setupUi(self)
 
 
 
