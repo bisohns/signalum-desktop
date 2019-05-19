@@ -1,4 +1,4 @@
-# signalum-gui
+# Signalum Desktop
 
 A Desktop application for the Signalyze CLI Tool
 
@@ -14,7 +14,7 @@ After modifying any `.ui` file run the `make ui_files` command to update
 
 
 
-# TODO
+## TODO
 - [ ] Integrate signalum Bluetooth
 - [ ] Integrate Signalum Wifi
 - [ ] Add Deployment for Linux and MAC
