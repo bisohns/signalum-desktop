@@ -16,3 +16,15 @@ def get_bluetooth_devices(**kwargs):
     kwargs['color'] = False
     bt_devices = bt.bluelyze(**kwargs)
     return bt_devices
+
+def get_wifi_devices(**kwargs):
+    """
+    Connects to the signalum library to return wifi table
+    """
+    kwargs['show_graph'] = False
+    kwargs['show_extra_info'] = True
+    kwargs['analyze_all'] = True
+    kwargs['graph'] = False
+    kwargs['color'] = False
+    wf_devices = wf.wifilyze(**kwargs)
+    return wf_devices

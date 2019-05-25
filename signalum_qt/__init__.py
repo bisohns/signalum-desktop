@@ -4,8 +4,8 @@ import sys
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from .handlers import get_bluetooth_devices
-from .qt import signalum_desktop
+from handlers import get_bluetooth_devices, get_wifi_devices
+from qt import signalum_desktop
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -18,7 +18,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def load_displays(self):
         """ Load the wifi and bluetooth displays to the Application """
-        self.add_bluelyze()
+        self.add_wifilyze()
 
     def add_bluelyze(self):
         """ Get the bluetooth devices for plotting and listing """
@@ -27,15 +27,16 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def add_wifilyze(self):
         """ Get the wifi devices for plotting and listing """
-        pass
+        wifi_devices, _ = get_wifi_devices()
+        self.append_data_row(self.wifiTable, wifi_devices)
 
     def append_data_row(self, table, data):
         """ Appends a data row to a QTableWidget"""
         table.setRowCount(len(data))
         for n, row in enumerate(data):
             for m, cell in enumerate(row):
-                _entry = QtWidgets.QTableWidgetItem(cell)
-                table.setItem(m, n, _entry)
+                _entry = QtWidgets.QTableWidgetItem(str(cell))
+                table.setItem(n, m, _entry)
 
 
 def _run():
