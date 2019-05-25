@@ -1,11 +1,12 @@
-#import system files
 import sys
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from qt import signalum
 
 
-
 class App(QtWidgets.QMainWindow, signalum.Ui_MainWindow):
+    """ The main Qt Application """
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
