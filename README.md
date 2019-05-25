@@ -12,6 +12,12 @@ A Desktop application for the Signalyze CLI Tool
 
 After modifying any `.ui` file run the `make ui_files` command to update
 
+### Run
+
+```bash
+  chmod +x runsignalum
+  ./runsignalum
+```  
 
 
 ## TODO
