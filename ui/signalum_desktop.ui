@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="adapterTab">
        <attribute name="title">
@@ -41,7 +41,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderVisible">
-           <bool>true</bool>
+           <bool>false</bool>
           </attribute>
           <row>
            <property name="text">
@@ -159,7 +159,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderVisible">
-           <bool>true</bool>
+           <bool>false</bool>
           </attribute>
           <row>
            <property name="text">
@@ -373,6 +373,14 @@
        <attribute name="title">
         <string>Signal Graph</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <layout class="QVBoxLayout" name="bluetoothGraphLayout"/>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="wifiGraphLayout"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="optionsTab">
        <attribute name="title">
@@ -449,7 +457,7 @@
      <x>0</x>
      <y>0</y>
      <width>756</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
