@@ -11,6 +11,6 @@ PyQt5-sip==4.19.17
 python-dateutil==2.8.0
 pytz==2019.1
 scipy==1.3.0
-Signalum==0.0.3
+Signalum
 six==1.12.0
 wifi==0.3.8

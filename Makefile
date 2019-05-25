@@ -1,5 +1,5 @@
-.PHONY: ui_files
-ui_files:
+.PHONY: from_ui_files
+from_ui_files:
 	scripts/build_ui_files.sh
 
 install:
