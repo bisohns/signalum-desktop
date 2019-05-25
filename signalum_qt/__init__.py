@@ -2,10 +2,9 @@ import sys, os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from qt import signalum
+from qt import signalum_desktop
 
-
-class App(QtWidgets.QMainWindow, signalum.Ui_MainWindow):
+class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
     """ The main Qt Application """
 
     def __init__(self, parent=None):
