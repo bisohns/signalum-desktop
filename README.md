@@ -15,7 +15,6 @@ After modifying any `.ui` file run the `make from_ui_files` command to update
 ### Run
 
 ```bash
-  chmod +x runsignalum
   ./runsignalum
 ```  
 
