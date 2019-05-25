@@ -291,27 +291,22 @@
           </column>
           <column>
            <property name="text">
-            <string>Manufacturer</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
             <string>Signal Strength</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Class</string>
+            <string>Major Class</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Minor Class</string>
            </property>
           </column>
           <column>
            <property name="text">
             <string>Services</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Details</string>
            </property>
           </column>
          </widget>
