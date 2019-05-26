@@ -3,7 +3,13 @@
 from PyQt5 import QtGui
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 
-class getTableValuesThread(QThread, QObject):
+class getDevicesDataThread(QThread, QObject):
+    """
+    Thread to run a retrieve devices function independently
+
+    Args:
+        table_fn(function): function to retrieve device data at single instance
+    """
     sig = pyqtSignal(list)
 
     def __init__(self, table_fn):
@@ -18,12 +24,11 @@ class getTableValuesThread(QThread, QObject):
     @pyqtSlot()
     def run(self):
         """
-        Run on an individual thread and emit values
+        Infinite function to get devices list from `table_fn` and emit the signal containing list
         """
         while True:
-            values, _ = self.table_fn() 
+            values, _ = self.table_fn.__call__() 
+            if not values:
+                values = []
             print(values)
-            if values:
-                self.sig.emit(values)
-            else:
-                self.sig.emit([])
+            self.sig.emit(values)

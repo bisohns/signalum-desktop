@@ -60,12 +60,12 @@ class Graphing:
             pass
         # TODO: label x-axis as time
         # self.dynamic_ax.xlabel = "Time"
-        # TOD: allow setting of graph color
+        # TODO: allow setting of graph color
         # self.dynamic_ax.set_facecolor('xkcd:sky blue')
-        self.signal_data = {}
+        self.signal_data = dict()
         # continous time axis
-        self.x_axis = []
-        self.name_data = {}
+        self.x_axis = list()
+        self.name_data = dict()
         # number of values to always have in a graph
         self.limit = -30
         # impossibly low value to indicate out of range
@@ -85,7 +85,6 @@ class Graphing:
         for i, j in zip(self.signal_data.values(), self.signal_data.keys()):
             # get device name from name dictionary
             device_name = self.name_data[j]
-            print(device_name)    
             # list of rssi values will be plotted on the y axis
             y = np.array(i)
             y = y[self.limit:]
