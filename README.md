@@ -20,7 +20,8 @@ After modifying any `.ui` file run the `make from_ui_files` command to update
 
 
 ## TODO
-- [ ] Integrate signalum Bluetooth
-- [ ] Integrate Signalum Wifi
+- [x] Integrate signalum Bluetooth
+- [x] Integrate Signalum Wifi
+- [ ] Include adapter details for wifi and bluetooth
 - [ ] Add Deployment for Linux and MAC
 - [ ] Add Tests and Documentation
