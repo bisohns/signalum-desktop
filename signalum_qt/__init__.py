@@ -1,15 +1,16 @@
 import os
 import sys
+import time
 
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 
+
 from utils import get_bluetooth_devices, get_wifi_devices, Graphing
 from qt import signalum_desktop
 from threads import getTableValuesThread
-
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
     """ The main Qt Application """
@@ -17,8 +18,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
         self.setupUi(self)
+
         self.bt_graph_handler = Graphing(protocol="bt")
         self.wf_graph_handler = Graphing(protocol="wf")
+    
         self.bluetoothGraphLayout.addWidget(self.bt_graph_handler.canvas)
         self.wifiGraphLayout.addWidget(self.wf_graph_handler.canvas)
         self.load_displays()
