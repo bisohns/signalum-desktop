@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 
 from functools import partial
 
@@ -10,13 +11,13 @@ from .utils import get_bluetooth_devices, get_wifi_devices, Graphing
 from .qt import signalum_desktop
 from .threads import getDevicesDataThread
 
-
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
     """ The main Qt Application """
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
         self.setupUi(self)
+
         self.bt_graph_handler = Graphing(protocol="bt")
         self.wf_graph_handler = Graphing(protocol="wf")
         # add graph handler canvas to their relevant layouts
