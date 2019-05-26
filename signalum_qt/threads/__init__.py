@@ -22,7 +22,7 @@ class getTableValuesThread(QThread, QObject):
         """
         while True:
             values, _ = self.table_fn() 
-            print(values, QThread.currentThread())
+            print(values)
             if values:
                 self.sig.emit(values)
             else:
