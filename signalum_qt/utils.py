@@ -42,9 +42,9 @@ class Graphing:
     """ Coordinate details of matplotlib graphing """
     def __init__(self, protocol):
         # TODO: create a ui to import the graph toolboxes
-        self.fig = Figure(figsize=(5, 3))
+        self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
-        self.dynamic_ax = self.canvas.figure.subplots()
+        self.dynamic_ax = self.canvas.figure.subplots(subplot_kw={"label":["ello", "kdl"]})
         # TODO: limit y axis to (-100, 0)
         # self.dynamic_ax.ylim = (-100, 0)
         # TODO: remove x ticks, let axis be clean

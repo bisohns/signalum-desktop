@@ -6,9 +6,9 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 
-from utils import get_bluetooth_devices, get_wifi_devices, Graphing
-from qt import signalum_desktop
-from threads import getTableValuesThread
+from .utils import get_bluetooth_devices, get_wifi_devices, Graphing
+from .qt import signalum_desktop
+from .threads import getTableValuesThread
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
