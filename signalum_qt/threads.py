@@ -27,8 +27,13 @@ class getDevicesDataThread(QThread, QObject):
         Infinite function to get devices list from `table_fn` and emit the signal containing list
         """
         while True:
-            values, _ = self.table_fn.__call__() 
-            if not values:
-                values = []
-            print(values)
-            self.sig.emit(values)
+            # For cases where the adapter is off. No readings are return
+            try:
+                values, _ = self.table_fn.__call__() 
+            except (ValueError, TypeError):
+                pass
+            else:
+                if not values:
+                    values = []
+                print(values)
+                self.sig.emit(values)

@@ -1,7 +1,9 @@
 """ A collection of functions and classes to be used by python UI files """
+import sys
 import datetime as dt
 import numpy as np
 from scipy.interpolate import interp1d
+from PyQt5 import QtWidgets
 
 
 import matplotlib.figure
@@ -11,9 +13,20 @@ from matplotlib.figure import Figure
 
 from signalum.core import _bluetooth as bt
 from signalum.core import _wifi as wf
+from signalum.core._exceptions import AdapterUnaccessibleError
 
 
-def get_bluetooth_devices(**kwargs):
+def exit_error_msg(parent, title, message):
+    """ A customization of QtMessageBox to exit the application after display """
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setText(message)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
+    key = msgBox.exec_()
+    if key == QtWidgets.QMessageBox.Ok:
+        sys.exit()
+
+def get_bluetooth_devices(parent, **kwargs):
     """
     Connects to the signalum library to return bluetooth table
     """
@@ -23,8 +36,13 @@ def get_bluetooth_devices(**kwargs):
     kwargs['analyze_all'] = True
     kwargs['graph'] = False
     kwargs['color'] = False
-    bt_devices = bt.bluelyze(**kwargs)
-    return bt_devices
+    try:
+        bt_devices = bt.bluelyze(**kwargs)
+    except AdapterUnaccessibleError:
+        exit_error_msg(parent, "Adapter Error", 
+                "Could not find Bluetooth Adapter. Turn it on and try again")
+    else:
+        return bt_devices
 
 def get_wifi_devices(**kwargs):
     """

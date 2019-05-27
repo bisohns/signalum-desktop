@@ -27,7 +27,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def load_displays(self):
         """ Load the wifi and bluetooth displays to the Application """
-        self.get_bt_thread = getDevicesDataThread(get_bluetooth_devices)
+        self.get_bt_thread = getDevicesDataThread(lambda : get_bluetooth_devices(self))
         self.get_wf_thread = getDevicesDataThread(get_wifi_devices)
 
         # use functools to create partial functions to run on two different threads
