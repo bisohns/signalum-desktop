@@ -92,11 +92,9 @@ class Graphing:
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
         self.dynamic_ax = self.canvas.figure.subplots()
-        # self.dynamic_ax.xticks = []
         self.protocol = protocol
         self.configure_graph()
         # TODO: allow setting of graph color
-        # self.dynamic_ax.set_facecolor('xkcd:sky blue')
         self.signal_data = dict()
         # continous time axis
         self.x_axis = list()
@@ -149,7 +147,6 @@ class Graphing:
             else:
                 self.dynamic_ax.plot(xs, y, label=device_name)
                 self.dynamic_ax.figure.canvas.draw()
-            # TODO: legend does not display, solve issue
             self.dynamic_ax.legend()
 
     def update_data(self, data):
