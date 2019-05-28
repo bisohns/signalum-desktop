@@ -92,11 +92,9 @@ class Graphing:
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
         self.dynamic_ax = self.canvas.figure.subplots()
-        # TODO: remove x ticks, let axis be clean
         # self.dynamic_ax.xticks = []
         self.protocol = protocol
-        # TODO: label x-axis as time
-        # self.dynamic_ax.xlabel = "Time"
+        self.configure_graph()
         # TODO: allow setting of graph color
         # self.dynamic_ax.set_facecolor('xkcd:sky blue')
         self.signal_data = dict()
@@ -108,21 +106,28 @@ class Graphing:
         # impossibly low value to indicate out of range
         self.out_of_range = -200
 
+    def configure_graph(self):
+        """ 
+        Graph needs to be configure to display appropriate data
+        """
+        self.dynamic_ax.set_ylim(ymin=-100, ymax=0)
+        # Set y-axis label
+        if self.protocol == "bt":
+            self.dynamic_ax.set_ylabel("BT RSSI")
+        elif self.protocol == "wf":
+            self.dynamic_ax.set_ylabel("WF RSSI")
+        self.dynamic_ax.set_xlabel("TIME")
+        # Hide x-ticks
+        self.dynamic_ax.tick_params(
+            axis='x', which='both', bottom=False, top=False, labelbottom=False)
+
     def update_canvas(self, data):
         """
         Update graph of canvas
         """
         self.update_data(data)
         self.dynamic_ax.clear()
-        self.dynamic_ax.set_ylim(ymin=-100, ymax=0)
-        if self.protocol == "bt":
-            # self.dynamic_ax.title = "Bluetooth Signal Strength against time"
-            self.dynamic_ax.set_ylabel("BT RSSI")
-        elif self.protocol == "wf":
-            # self.dynamic_ax.title = "Wifi Signal Strength against time"
-            self.dynamic_ax.set_ylabel("WF RSSI")
-        self.dynamic_ax.set_xlabel("TIME")
-        self.dynamic_ax.set_xticks([])
+        self.configure_graph()
         # turn time data to numpy array
         # limit x axis
         self.x_axis = self.x_axis[self.limit:]
