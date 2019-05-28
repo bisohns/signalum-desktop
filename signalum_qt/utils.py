@@ -61,7 +61,7 @@ def get_bluetooth_devices(parent, **kwargs):
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
         exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
-                       "Closing application, restart application with enabled bluetooth adapter")
+                    "Closing application, restart application with enabled bluetooth adapter")
     else:
         return bt_devices
 
