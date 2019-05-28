@@ -110,7 +110,7 @@ class Graphing:
         """ 
         Graph needs to be configure to display appropriate data
         """
-        self.dynamic_ax.set_ylim(ymin=-100, ymax=0)
+        self.dynamic_ax.set_ylim(bottom=-100, top=0)
         # Set y-axis label
         if self.protocol == "bt":
             self.dynamic_ax.set_ylabel("BT RSSI")
