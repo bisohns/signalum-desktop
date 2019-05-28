@@ -23,8 +23,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         # add graph handler canvas to their relevant layouts
         self.bluetoothGraphLayout.addWidget(self.bt_graph_handler.canvas)
-        self.bluetoothGraphToolbar.addWidget(self.bt_graph_handler.toolbar)
         self.wifiGraphLayout.addWidget(self.wf_graph_handler.canvas)
+        # add individual toolbars to their relevant layouts
+        self.bluetoothGraphToolbar.addWidget(self.bt_graph_handler.toolbar)
         self.wifiGraphToolbar.addWidget(self.wf_graph_handler.toolbar)
         self.load_displays()
 

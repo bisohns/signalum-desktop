@@ -91,6 +91,7 @@ class Graphing:
         # TODO: create a ui to import the graph toolboxes
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
+        # set toolbar for canvas and bind toolbar to parent for render
         self.toolbar = NavigationToolbar(self.canvas, parent)
         self.dynamic_ax = self.canvas.figure.subplots()
         self.protocol = protocol
