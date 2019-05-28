@@ -20,6 +20,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         self.bt_graph_handler = Graphing(protocol="bt")
         self.wf_graph_handler = Graphing(protocol="wf")
+        # Checks that detect wifi and bluetooth adapter availability
+        self.bluetooth_enabled = False
+        self.wifi_enabled = False
         # add graph handler canvas to their relevant layouts
         self.bluetoothGraphLayout.addWidget(self.bt_graph_handler.canvas)
         self.wifiGraphLayout.addWidget(self.wf_graph_handler.canvas)
@@ -63,6 +66,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.wf_graph_handler.update_canvas(data)
         elif protocol == "bt":
             self.bt_graph_handler.update_canvas(data)
+
 
 
 

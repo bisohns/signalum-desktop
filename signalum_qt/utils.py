@@ -1,5 +1,7 @@
 """ A collection of functions and classes to be used by python UI files """
 import sys
+import functools
+
 import datetime as dt
 import numpy as np
 from scipy.interpolate import interp1d
@@ -16,15 +18,30 @@ from signalum.core import _wifi as wf
 from signalum.core._exceptions import AdapterUnaccessibleError
 
 
-def exit_error_msg(parent, title, message):
+def calltracker(func):
+
+    @functools.wraps(func)
+
+    def wrapper(*args, **kwargs):
+
+        wrapper.has_been_called = True
+
+        return func(*args, **kwargs)
+
+    wrapper.has_been_called = False
+
+    return wrapper
+
+# calltracker implicity tracks function call
+@calltracker
+def exit_error_msg(title, message):
     """ A customization of QtMessageBox to exit the application after display """
     msgBox = QtWidgets.QMessageBox()
     msgBox.setText(message)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-    key = msgBox.exec_()
-    if key == QtWidgets.QMessageBox.Ok:
-        sys.exit()
+    msgBox.exec_()
+
 
 def get_bluetooth_devices(parent, **kwargs):
     """
@@ -39,9 +56,11 @@ def get_bluetooth_devices(parent, **kwargs):
     try:
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
-        exit_error_msg(parent, "Adapter Error", 
-                "Could not find Bluetooth Adapter. Turn it on and try again")
+        if not exit_error_msg.has_been_called:
+            exit_error_msg("Adapter Unaccessible",
+                        "Could not find bluetooth adapter, turn on and retry")
     else:
+        exit_error_msg.has_been_called = False
         return bt_devices
 
 def get_wifi_devices(**kwargs):
@@ -62,7 +81,7 @@ class Graphing:
         # TODO: create a ui to import the graph toolboxes
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
-        self.dynamic_ax = self.canvas.figure.subplots(subplot_kw={"label":["ello", "kdl"]})
+        self.dynamic_ax = self.canvas.figure.subplots()
         # TODO: limit y axis to (-100, 0)
         # self.dynamic_ax.ylim = (-100, 0)
         # TODO: remove x ticks, let axis be clean

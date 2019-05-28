@@ -2,6 +2,7 @@
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
+from signalum.core._exceptions import AdapterUnaccessibleError
 
 class getDevicesDataThread(QThread, QObject):
     """
@@ -37,3 +38,5 @@ class getDevicesDataThread(QThread, QObject):
                     values = []
                 print(values)
                 self.sig.emit(values)
+
+
