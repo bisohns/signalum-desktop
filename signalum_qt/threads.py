@@ -4,6 +4,8 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 from signalum.core._exceptions import AdapterUnaccessibleError
 
+from .utils import exit_error_msg
+
 class getDevicesDataThread(QThread, QObject):
     """
     Thread to run a retrieve devices function independently
@@ -36,6 +38,7 @@ class getDevicesDataThread(QThread, QObject):
             else:
                 if not values:
                     values = []
+                print(exit_error_msg.has_been_called)
                 print(values)
                 self.sig.emit(values)
 

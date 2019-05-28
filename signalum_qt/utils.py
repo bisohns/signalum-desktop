@@ -22,11 +22,11 @@ def calltracker(func):
 
     @functools.wraps(func)
 
-    def wrapper(*args, **kwargs):
+    def wrapper(*args):
 
         wrapper.has_been_called = True
 
-        return func(*args, **kwargs)
+        return func(*args)
 
     wrapper.has_been_called = False
 
@@ -34,13 +34,19 @@ def calltracker(func):
 
 # calltracker implicity tracks function call
 @calltracker
-def exit_error_msg(title, message):
+def exit_error_msg(parent, title, message):
     """ A customization of QtMessageBox to exit the application after display """
+    # turn off updatability while showing message to prevent repaint
+    parent.get_bt_thread.blockSignals(True)
     msgBox = QtWidgets.QMessageBox()
     msgBox.setText(message)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-    msgBox.exec_()
+    key = msgBox.exec_()
+    if key == QtWidgets.QMessageBox.Ok:
+        # resume updatability
+        parent.get_bt_thread.blockSignals(False)
+
 
 
 def get_bluetooth_devices(parent, **kwargs):
@@ -55,12 +61,13 @@ def get_bluetooth_devices(parent, **kwargs):
     kwargs['color'] = False
     try:
         bt_devices = bt.bluelyze(**kwargs)
-    except AdapterUnaccessibleError:
+        exit_error_msg.has_been_called = False
+    except:
         if not exit_error_msg.has_been_called:
-            exit_error_msg("Adapter Unaccessible",
+            # implicitly set exit_error_msg.has_been_called to True
+            exit_error_msg(parent, "Adapter Unaccessible",
                         "Could not find bluetooth adapter, turn on and retry")
     else:
-        exit_error_msg.has_been_called = False
         return bt_devices
 
 def get_wifi_devices(**kwargs):
