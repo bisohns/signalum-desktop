@@ -61,37 +61,25 @@ def get_bluetooth_devices(parent, **kwargs):
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
         exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
-<< << << < HEAD
-                    "Closing application, restart application with enabled bluetooth adapter")
+                       "Closing application, restart application with enabled bluetooth adapter")
     else:
         return bt_devices
 
 
 def get_wifi_devices(parent, **kwargs):
-
-
-== == == =
-                       "Bluetooth thread permanently disabled, restart application with enabled adapter")
-        parent.get_bt_thread.sleep()
-    else:
-        return bt_devices
-
-
-def get_wifi_devices(**kwargs):
->>>>>> > Set view limit to y-axis to show out of range devices
     """
     Connects to the signalum library to return wifi table
     """
-    kwargs['show_graph']=False
-    kwargs['show_extra_info']=True
-    kwargs['analyze_all']=True
-    kwargs['graph']=False
-    kwargs['color']=False
+    kwargs['show_graph'] = False
+    kwargs['show_extra_info'] = True
+    kwargs['analyze_all'] = True
+    kwargs['graph'] = False
+    kwargs['color'] = False
     try:
-        wf_devices=wf.wifilyze(**kwargs)
+        wf_devices = wf.wifilyze(**kwargs)
     except:
         exit_error_msg(parent, "Wifi Adapter Unaccessible",
-                    "Closing application, restart application with enabled wifi adapter")
+                       "Closing application, restart application with enabled wifi adapter")
     else:
         return wf_devices
 
