@@ -38,7 +38,6 @@ class getDevicesDataThread(QThread, QObject):
             else:
                 if not values:
                     values = []
-                print(exit_error_msg.has_been_called)
                 print(values)
                 self.sig.emit(values)
 

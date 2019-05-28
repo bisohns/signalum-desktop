@@ -18,6 +18,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         super(App, self).__init__(parent=parent)
         self.setupUi(self)
 
+        self.show_bt_error = True
+        self.show_wf_error = True
+
         self.bt_graph_handler = Graphing(protocol="bt")
         self.wf_graph_handler = Graphing(protocol="wf")
         # Checks that detect wifi and bluetooth adapter availability
@@ -30,6 +33,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def load_displays(self):
         """ Load the wifi and bluetooth displays to the Application """
+        
         self.get_bt_thread = getDevicesDataThread(lambda : get_bluetooth_devices(self))
         self.get_wf_thread = getDevicesDataThread(get_wifi_devices)
 

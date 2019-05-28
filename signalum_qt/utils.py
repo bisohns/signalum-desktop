@@ -25,7 +25,7 @@ def calltracker(func):
     def wrapper(*args):
 
         wrapper.has_been_called = True
-
+        
         return func(*args)
 
     wrapper.has_been_called = False
@@ -37,15 +37,14 @@ def calltracker(func):
 def exit_error_msg(parent, title, message):
     """ A customization of QtMessageBox to exit the application after display """
     # turn off updatability while showing message to prevent repaint
-    parent.get_bt_thread.blockSignals(True)
     msgBox = QtWidgets.QMessageBox()
     msgBox.setText(message)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
     key = msgBox.exec_()
-    if key == QtWidgets.QMessageBox.Ok:
+    # if key == QtWidgets.QMessageBox.Ok:
         # resume updatability
-        parent.get_bt_thread.blockSignals(False)
+        
 
 
 
@@ -61,12 +60,11 @@ def get_bluetooth_devices(parent, **kwargs):
     kwargs['color'] = False
     try:
         bt_devices = bt.bluelyze(**kwargs)
-        exit_error_msg.has_been_called = False
-    except:
-        if not exit_error_msg.has_been_called:
-            # implicitly set exit_error_msg.has_been_called to True
-            exit_error_msg(parent, "Adapter Unaccessible",
-                        "Could not find bluetooth adapter, turn on and retry")
+    except AdapterUnaccessibleError:
+        print("In exception")
+        exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
+                    "Bluetooth thread permanently disabled, restart application with enabled adapter")
+        parent.get_bt_thread.sleep()
     else:
         return bt_devices
 
