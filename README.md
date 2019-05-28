@@ -1,6 +1,6 @@
 # Signalum Desktop
 
-A Desktop application for the Signalyze CLI Tool
+A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
 
 ## Development
 
