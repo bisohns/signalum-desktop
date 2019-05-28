@@ -18,12 +18,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         super(App, self).__init__(parent=parent)
         self.setupUi(self)
 
-        self.bt_graph_handler = Graphing(protocol="bt")
-        self.wf_graph_handler = Graphing(protocol="wf")
+        self.bt_graph_handler = Graphing(self, protocol="bt")
+        self.wf_graph_handler = Graphing(self, protocol="wf")
 
         # add graph handler canvas to their relevant layouts
         self.bluetoothGraphLayout.addWidget(self.bt_graph_handler.canvas)
+        self.bluetoothGraphToolbar.addWidget(self.bt_graph_handler.toolbar)
         self.wifiGraphLayout.addWidget(self.wf_graph_handler.canvas)
+        self.wifiGraphToolbar.addWidget(self.wf_graph_handler.toolbar)
         self.load_displays()
 
     def load_displays(self):

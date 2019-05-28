@@ -87,10 +87,11 @@ def get_wifi_devices(parent, **kwargs):
 class Graphing:
     """ Coordinate details of matplotlib graphing """
 
-    def __init__(self, protocol):
+    def __init__(self, parent, protocol):
         # TODO: create a ui to import the graph toolboxes
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
+        self.toolbar = NavigationToolbar(self.canvas, parent)
         self.dynamic_ax = self.canvas.figure.subplots()
         self.protocol = protocol
         self.configure_graph()

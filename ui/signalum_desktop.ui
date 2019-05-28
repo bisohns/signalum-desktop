@@ -423,8 +423,7 @@
         <item>
          <widget class="QWidget" name="widget" native="true">
           <property name="styleSheet">
-           <string notr="true">background-color: black;
-color: white;</string>
+           <string notr="true"/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
@@ -454,6 +453,16 @@ color: white;</string>
               </widget>
              </item>
              <item>
+              <layout class="QVBoxLayout" name="bluetoothGraphToolbar"/>
+             </item>
+             <item>
+              <widget class="Line" name="line_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
                 <string>Wifi Devices</string>
@@ -469,6 +478,16 @@ color: white;</string>
              </item>
              <item>
               <layout class="QVBoxLayout" name="wifiGraphLayout"/>
+             </item>
+             <item>
+              <widget class="Line" name="line_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="wifiGraphToolbar"/>
              </item>
             </layout>
            </item>
