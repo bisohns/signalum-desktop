@@ -92,20 +92,9 @@ class Graphing:
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
         self.dynamic_ax = self.canvas.figure.subplots()
-        self.dynamic_ax.set_axis_off()
-        # TODO: limit y axis to (-100, 0)
-        # self.dynamic_ax.ylim = (-100, 0)
         # TODO: remove x ticks, let axis be clean
         # self.dynamic_ax.xticks = []
-        # TODO: title axis and ylabel based on protocol
-        if protocol == "bt":
-            # self.dynamic_ax.title = "Bluetooth Signal Strength against time"
-            # self.dynamic_ax.ylabel = "BT RSSI"
-            pass
-        elif protocol == "wf":
-            # self.dynamic_ax.title = "Wifi Signal Strength against time"
-            # self.dynamic_ax.ylabel = "WF RSSI"
-            pass
+        self.protocol = protocol
         # TODO: label x-axis as time
         # self.dynamic_ax.xlabel = "Time"
         # TODO: allow setting of graph color
@@ -126,6 +115,14 @@ class Graphing:
         self.update_data(data)
         self.dynamic_ax.clear()
         self.dynamic_ax.set_ylim(ymin=-100, ymax=0)
+        if self.protocol == "bt":
+            # self.dynamic_ax.title = "Bluetooth Signal Strength against time"
+            self.dynamic_ax.set_ylabel("BT RSSI")
+        elif self.protocol == "wf":
+            # self.dynamic_ax.title = "Wifi Signal Strength against time"
+            self.dynamic_ax.set_ylabel("WF RSSI")
+        self.dynamic_ax.set_xlabel("TIME")
+        self.dynamic_ax.set_xticks([])
         # turn time data to numpy array
         # limit x axis
         self.x_axis = self.x_axis[self.limit:]
