@@ -1,18 +1,16 @@
 """ A collection of functions and classes to be used by python UI files """
-import sys
-import functools
-
 import datetime as dt
+import functools
+import sys
+
 import numpy as np
-from scipy.interpolate import interp1d
-from PyQt5 import QtWidgets
-
-
-import matplotlib.figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qt5agg import \
+    FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import \
+    NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
-
+from PyQt5 import QtWidgets
+from scipy.interpolate import interp1d
 from signalum.core import _bluetooth as bt
 from signalum.core import _wifi as wf
 from signalum.core._exceptions import AdapterUnaccessibleError
@@ -21,16 +19,16 @@ from signalum.core._exceptions import AdapterUnaccessibleError
 def calltracker(func):
 
     @functools.wraps(func)
-
     def wrapper(*args):
 
         wrapper.has_been_called = True
-        
+
         return func(*args)
 
     wrapper.has_been_called = False
 
     return wrapper
+
 
 # calltracker implicity tracks function call
 @calltracker
@@ -47,8 +45,6 @@ def exit_error_msg(parent, title, message):
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
     msgBox.exec_()
     sys.exit(parent)
-        
-
 
 
 def get_bluetooth_devices(parent, **kwargs):
@@ -56,7 +52,7 @@ def get_bluetooth_devices(parent, **kwargs):
     Connects to the signalum library to return bluetooth table
     """
     kwargs['show_graph'] = False
-    kwargs['show_name'] = True 
+    kwargs['show_name'] = True
     kwargs['show_extra_info'] = True
     kwargs['analyze_all'] = True
     kwargs['graph'] = False
@@ -65,34 +61,50 @@ def get_bluetooth_devices(parent, **kwargs):
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
         exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
+<< << << < HEAD
                     "Closing application, restart application with enabled bluetooth adapter")
     else:
         return bt_devices
 
+
 def get_wifi_devices(parent, **kwargs):
+
+
+== == == =
+                       "Bluetooth thread permanently disabled, restart application with enabled adapter")
+        parent.get_bt_thread.sleep()
+    else:
+        return bt_devices
+
+
+def get_wifi_devices(**kwargs):
+>>>>>> > Set view limit to y-axis to show out of range devices
     """
     Connects to the signalum library to return wifi table
     """
-    kwargs['show_graph'] = False
-    kwargs['show_extra_info'] = True
-    kwargs['analyze_all'] = True
-    kwargs['graph'] = False
-    kwargs['color'] = False
+    kwargs['show_graph']=False
+    kwargs['show_extra_info']=True
+    kwargs['analyze_all']=True
+    kwargs['graph']=False
+    kwargs['color']=False
     try:
-        wf_devices = wf.wifilyze(**kwargs)
+        wf_devices=wf.wifilyze(**kwargs)
     except:
         exit_error_msg(parent, "Wifi Adapter Unaccessible",
                     "Closing application, restart application with enabled wifi adapter")
     else:
         return wf_devices
 
+
 class Graphing:
     """ Coordinate details of matplotlib graphing """
+
     def __init__(self, protocol):
         # TODO: create a ui to import the graph toolboxes
         self.fig = Figure()
         self.canvas = FigureCanvas(self.fig)
         self.dynamic_ax = self.canvas.figure.subplots()
+        self.dynamic_ax.set_axis_off()
         # TODO: limit y axis to (-100, 0)
         # self.dynamic_ax.ylim = (-100, 0)
         # TODO: remove x ticks, let axis be clean
@@ -125,6 +137,7 @@ class Graphing:
         """
         self.update_data(data)
         self.dynamic_ax.clear()
+        self.dynamic_ax.set_ylim(ymin=-100, ymax=0)
         # turn time data to numpy array
         # limit x axis
         self.x_axis = self.x_axis[self.limit:]
@@ -148,11 +161,11 @@ class Graphing:
                 self.dynamic_ax.figure.canvas.draw()
             # TODO: legend does not display, solve issue
             self.dynamic_ax.legend()
-    
+
     def update_data(self, data):
         """ Update the data for display """
         # TODO Update the data accordingly
-        # self.data[address] = 
+        # self.data[address] =
         macs = [i[1] for i in data]
         names = [i[0] for i in data]
         rssi = [i[2] for i in data]
@@ -164,11 +177,12 @@ class Graphing:
                 assert self.signal_data[x]
             except KeyError:
                 # if device history was not found, create one with out of range values
-                self.signal_data[x] = [self.out_of_range for i in range(len(self.x_axis) - 1)]
+                self.signal_data[x] = [
+                    self.out_of_range for i in range(len(self.x_axis) - 1)]
             finally:
                 # add device name to name dictionary
-                self.name_data[x] = str(names[a])   
-                # append signal data to signal dictionary 
+                self.name_data[x] = str(names[a])
+                # append signal data to signal dictionary
                 self.signal_data[x].append(y)
         key_list = [i for i in self.signal_data.keys()]
         # find devices that were not discovered but were discovered before
