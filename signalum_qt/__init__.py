@@ -18,14 +18,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         super(App, self).__init__(parent=parent)
         self.setupUi(self)
 
-        self.show_bt_error = True
-        self.show_wf_error = True
-
         self.bt_graph_handler = Graphing(protocol="bt")
         self.wf_graph_handler = Graphing(protocol="wf")
-        # Checks that detect wifi and bluetooth adapter availability
-        self.bluetooth_enabled = False
-        self.wifi_enabled = False
+
         # add graph handler canvas to their relevant layouts
         self.bluetoothGraphLayout.addWidget(self.bt_graph_handler.canvas)
         self.wifiGraphLayout.addWidget(self.wf_graph_handler.canvas)
@@ -33,9 +28,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def load_displays(self):
         """ Load the wifi and bluetooth displays to the Application """
-        
+        # pass main application as parent to the fn
         self.get_bt_thread = getDevicesDataThread(lambda : get_bluetooth_devices(self))
-        self.get_wf_thread = getDevicesDataThread(get_wifi_devices)
+        self.get_wf_thread = getDevicesDataThread(lambda :get_wifi_devices(self))
 
         # use functools to create partial functions to run on two different threads
         bt_table_partial = partial(self.update_table, self.bluetoothTable)

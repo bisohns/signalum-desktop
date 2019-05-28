@@ -36,14 +36,17 @@ def calltracker(func):
 @calltracker
 def exit_error_msg(parent, title, message):
     """ A customization of QtMessageBox to exit the application after display """
-    # turn off updatability while showing message to prevent repaint
+    # block signals from all threads
+    parent.blockSignals(True)
+    parent.get_bt_thread.blockSignals(True)
+    parent.get_wf_thread.blockSignals(True)
+    # create an error message box and display
     msgBox = QtWidgets.QMessageBox()
     msgBox.setText(message)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-    key = msgBox.exec_()
-    # if key == QtWidgets.QMessageBox.Ok:
-        # resume updatability
+    msgBox.exec_()
+    sys.exit(parent)
         
 
 
@@ -61,14 +64,12 @@ def get_bluetooth_devices(parent, **kwargs):
     try:
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
-        print("In exception")
         exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
-                    "Bluetooth thread permanently disabled, restart application with enabled adapter")
-        parent.get_bt_thread.sleep()
+                    "Closing application, restart application with enabled bluetooth adapter")
     else:
         return bt_devices
 
-def get_wifi_devices(**kwargs):
+def get_wifi_devices(parent, **kwargs):
     """
     Connects to the signalum library to return wifi table
     """
@@ -77,8 +78,13 @@ def get_wifi_devices(**kwargs):
     kwargs['analyze_all'] = True
     kwargs['graph'] = False
     kwargs['color'] = False
-    wf_devices = wf.wifilyze(**kwargs)
-    return wf_devices
+    try:
+        wf_devices = wf.wifilyze(**kwargs)
+    except:
+        exit_error_msg(parent, "Wifi Adapter Unaccessible",
+                    "Closing application, restart application with enabled wifi adapter")
+    else:
+        return wf_devices
 
 class Graphing:
     """ Coordinate details of matplotlib graphing """

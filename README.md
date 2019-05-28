@@ -10,16 +10,16 @@ A Desktop application for the Signalyze CLI Tool
   make install
 ```
 
-After modifying any `.ui` file run the `make from_ui_files` command to update
+After modifying any `.ui` file run the `make ui_files` command to update
 
 ### Run
 
 ```bash
   ./runsignalum
-```  
-
+```
 
 ## TODO
+
 - [x] Integrate signalum Bluetooth
 - [x] Integrate Signalum Wifi
 - [ ] Include adapter details for wifi and bluetooth
