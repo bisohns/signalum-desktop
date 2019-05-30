@@ -1,6 +1,11 @@
-![signalum-icon](assets/signalum.png)
+<p align="center">
+  <img src="assets/signalum.png" height="100" /><br/>
+  <span><b>Signalum Desktop</b>
+</p>
 
-# Signalum Desktop
+![Signal-Graph](assets/signal-graph.png)
+
+![Devices](assets/devices.png)
 
 A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
 
@@ -26,11 +31,6 @@ After modifying any `.ui` file run the `make ui_files` command to update
   ./signalum
 ```
 
-### Examples
-
-![Signal-Graph](assets/signal-graph.png)
-
-![Devices](assets/devices.png)
 
 ## TODO
 
