@@ -1,3 +1,5 @@
+![signalum-icon](assets/signalum.png)
+
 # Signalum Desktop
 
 A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
