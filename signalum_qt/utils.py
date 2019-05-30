@@ -110,6 +110,7 @@ class Graphing:
         """ 
         Graph needs to be configure to display appropriate data
         """
+        self.dynamic_ax.clear()
         self.dynamic_ax.set_ylim(bottom=-100, top=0)
         # Set y-axis label
         if self.protocol == "bt":
@@ -120,13 +121,13 @@ class Graphing:
         # Hide x-ticks
         self.dynamic_ax.tick_params(
             axis='x', which='both', bottom=False, top=False, labelbottom=False)
+        self.dynamic_ax.grid(True)
 
     def update_canvas(self, data):
         """
         Update graph of canvas
         """
         self.update_data(data)
-        self.dynamic_ax.clear()
         self.configure_graph()
         # turn time data to numpy array
         # limit x axis
@@ -145,11 +146,10 @@ class Graphing:
                 y_smooth = f(x_new)
                 # plot smooth plot with scatter point plots
                 self.dynamic_ax.plot(x_new, y_smooth, label=device_name)
-                self.dynamic_ax.figure.canvas.draw()
             else:
                 self.dynamic_ax.plot(xs, y, label=device_name)
-                self.dynamic_ax.figure.canvas.draw()
-            self.dynamic_ax.legend()
+            self.dynamic_ax.legend(loc='upper center')
+        self.dynamic_ax.figure.canvas.draw()        
 
     def update_data(self, data):
         """ Update the data for display """

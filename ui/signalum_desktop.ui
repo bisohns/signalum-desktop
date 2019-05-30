@@ -505,6 +505,19 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="1">
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
             <item row="1" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_15"/>
             </item>
@@ -527,6 +540,9 @@
               <property name="text">
                <string>Show bluetooth names</string>
               </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item row="4" column="0">
@@ -537,68 +553,17 @@
              </widget>
             </item>
             <item row="4" column="1">
-             <widget class="QSpinBox" name="bluetoothRefreshRate"/>
-            </item>
-            <item row="6" column="1">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>Wifi</string>
+             <widget class="QSpinBox" name="bluetoothRefreshRate">
+              <property name="minimum">
+               <number>1000</number>
+              </property>
+              <property name="maximum">
+               <number>10000</number>
+              </property>
+              <property name="singleStep">
+               <number>50</number>
               </property>
              </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QCheckBox" name="wifiShowInfo">
-              <property name="text">
-               <string>Show extra  information</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Refresh rate (ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
-             <widget class="QSpinBox" name="wifiRefreshRate"/>
-            </item>
-            <item row="11" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout_19"/>
-            </item>
-            <item row="11" column="1">
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>All</string>
-              </property>
-             </widget>
-            </item>
-            <item row="12" column="0">
-             <widget class="QCheckBox" name="wifiSwitch">
-              <property name="text">
-               <string>Turn Wifi on</string>
-              </property>
-             </widget>
-            </item>
-            <item row="13" column="0">
-             <widget class="QCheckBox" name="checkBox_3">
-              <property name="text">
-               <string>Turn Bluetooth on</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="1">
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item row="5" column="1">
              <spacer name="verticalSpacer">
@@ -613,8 +578,35 @@
               </property>
              </spacer>
             </item>
-            <item row="0" column="1">
-             <spacer name="verticalSpacer_3">
+            <item row="6" column="1">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Wifi</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Refresh rate (ms)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QSpinBox" name="wifiRefreshRate">
+              <property name="minimum">
+               <number>1000</number>
+              </property>
+              <property name="maximum">
+               <number>10000</number>
+              </property>
+              <property name="singleStep">
+               <number>50</number>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <spacer name="verticalSpacer_2">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -625,6 +617,39 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="10" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_19"/>
+            </item>
+            <item row="10" column="1">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>All</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0">
+             <widget class="QCheckBox" name="wifiSwitch">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>Turn Wifi on</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="0">
+             <widget class="QCheckBox" name="checkBox_3">
+              <property name="text">
+               <string>Turn Bluetooth on</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
