@@ -18,6 +18,12 @@ After modifying any `.ui` file run the `make ui_files` command to update
   ./runsignalum
 ```
 
+### Examples
+
+![Signal-Graph](assets/signal-graph.png)
+
+![Devices](assets/devices.png)
+
 ## TODO
 
 - [x] Integrate signalum Bluetooth
