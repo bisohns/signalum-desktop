@@ -2,11 +2,17 @@
 
 A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
 
-## Development
+### Development
+
+```bash
+  # install dependencies and start in development mode
+  make development
+```
 
 ### Installation
 
 ```bash
+  # create symbolic link in /usr/local/bin
   make install
 ```
 
@@ -15,7 +21,7 @@ After modifying any `.ui` file run the `make ui_files` command to update
 ### Run
 
 ```bash
-  ./runsignalum
+  ./signalum
 ```
 
 ### Examples
