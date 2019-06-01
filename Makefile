@@ -1,29 +1,17 @@
-.PHONY: ui_files
-
 ui_files:
-	scripts/build_ui_files.sh
+	sudo `which python` build.py ui_files
+	@echo "SIGNALUM >>> generated py code from ui"
 
 dependencies:
 	sudo apt-get install bluetooth libbluetooth-dev
 	@echo "SIGNALUM >>> install python dependencies"
-	pip install -r requirements.txt
-
-install:
-	@echo "SIGNALUM >>> installation using active development repo"
-	@echo "SIGNALUM >>> making dependencies"
-	make dependencies
-	sudo apt  install --no-install-recommends gnome-panel
-	sudo chmod a+rx ./signalum
-	@echo "SIGNALUM >>> creating symlink at /usr/local/bin/signalum"
-	sudo ln -srf ./signalum /usr/local/bin/
-	@echo "SIGNALUM >>> installation complete, enter `signalum` to run"
+	pip install -r requirements/linux.txt
 
 development:
-	make dependencies
+	# build ui files
 	make ui_files
-	./signalum
+	sudo `which python` build.py run
 
 uninstall:
-	pip uninstall signalum
-	sudo rm -rf /usr/local/bin/signalum
+	pip uninstall -r requirements/linux.txt
 	@echo "SIGNALUM >>> uninstallation complete"
