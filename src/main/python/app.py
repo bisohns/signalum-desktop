@@ -144,8 +144,12 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         based on the `update_fn` passed as arg
         """
         thread = QtCore.QThread(self)
+        show_bt_services = self.settings.value('bt_services', False, bool)
+        show_bt_names = self.settings.value('bt_names', True, bool)
         worker = Worker(
-            lambda: update_fn(self), '%sThreadWorker' % protocol, refresh_rate)
+            lambda: update_fn(self, show_name=show_bt_names,
+                              show_extra_info=show_bt_services),
+            '%sThreadWorker' % protocol, refresh_rate)
         worker.moveToThread(thread)
         # use functools to create partial functions to run on two different threads
         table_partial = partial(self.update_table, table)

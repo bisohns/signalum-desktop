@@ -52,8 +52,6 @@ def get_bluetooth_devices(parent, **kwargs):
     Connects to the signalum library to return bluetooth table
     """
     kwargs['show_graph'] = False
-    kwargs['show_name'] = True
-    kwargs['show_extra_info'] = True
     kwargs['analyze_all'] = True
     kwargs['graph'] = False
     kwargs['color'] = False
