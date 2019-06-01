@@ -2,12 +2,14 @@
   <img src="assets/signalum.png" height="100" /><br/>
   <span><b>Signalum Desktop</b>
 </p>
+<br>
+A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
+<br> <br>
 
 ![Signal-Graph](assets/signal-graph.png)
 
 ![Devices](assets/devices.png)
 
-A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
 
 ### Development
 
