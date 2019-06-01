@@ -13,6 +13,7 @@ dependencies:
 dev:
 	# build ui files
 	make ui_files
+	@echo "SIGNALUM >>> starting gui program"
 	sudo `which python` build.py run
 
 uninstall:
