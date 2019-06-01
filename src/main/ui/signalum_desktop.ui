@@ -21,7 +21,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="adapterTab">
        <attribute name="title">
@@ -279,11 +279,29 @@
             </color>
            </brush>
           </colorrole>
+          <colorrole role="PlaceholderText">
+           <brush brushstyle="NoBrush">
+            <color alpha="128">
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
          </active>
          <inactive>
           <colorrole role="Text">
            <brush brushstyle="SolidPattern">
             <color alpha="255">
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="PlaceholderText">
+           <brush brushstyle="NoBrush">
+            <color alpha="128">
              <red>255</red>
              <green>255</green>
              <blue>255</blue>
@@ -298,6 +316,15 @@
              <red>190</red>
              <green>190</green>
              <blue>190</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="PlaceholderText">
+           <brush brushstyle="NoBrush">
+            <color alpha="128">
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
             </color>
            </brush>
           </colorrole>
@@ -390,6 +417,79 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>WiFi Table</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="wifiTable">
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>110</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>MAC Address</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>RSSI</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Frequency</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Quality</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Encryption Type</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Mode of Device</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Channel</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_10">
           <property name="text">
            <string>Bluetooth Table</string>
@@ -454,79 +554,6 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>WiFi Table</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Line" name="line_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="wifiTable">
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
-          <attribute name="horizontalHeaderCascadingSectionResizes">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>110</number>
-          </attribute>
-          <attribute name="horizontalHeaderStretchLastSection">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="verticalHeaderStretchLastSection">
-           <bool>false</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>MAC Address</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>RSSI</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Frequency</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Quality</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Encryption Type</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Mode of Device</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Channel</string>
-           </property>
-          </column>
          </widget>
         </item>
        </layout>
@@ -614,7 +641,7 @@
              </widget>
             </item>
             <item row="7" column="0">
-             <widget class="QCheckBox" name="checkBox_3">
+             <widget class="QCheckBox" name="bluetoothSwitch">
               <property name="text">
                <string>Turn Bluetooth on</string>
               </property>
@@ -628,9 +655,9 @@
          </layout>
         </item>
         <item>
-         <widget class="QDialogButtonBox" name="buttonBox">
+         <widget class="QDialogButtonBox" name="saveOptionsButtonBox">
           <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+           <set>QDialogButtonBox::Save</set>
           </property>
           <property name="centerButtons">
            <bool>true</bool>
@@ -652,7 +679,7 @@
      <x>0</x>
      <y>0</y>
      <width>756</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

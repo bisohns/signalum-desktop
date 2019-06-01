@@ -22,25 +22,35 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.setupUi(self)
 
         # Define Some Actions
-        playAction = self.createAction(
+        playAction = self.create_action(
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start Reading')
-        stopAction = self.createAction(
+        stopAction = self.create_action(
             '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop Reading')
 
         actionToolBar = self.addToolBar('Action')
         actionToolBar.setObjectName('actionToolBar')
-        self.addActions(actionToolBar, (playAction, stopAction))
+        self.add_actions(actionToolBar, (playAction, stopAction))
 
         # Configure Application Settings
-        settings = QtCore.QSettings('BisonCorps', 'signalum')
-        _show_bt_services = settings.value('bt_services', False, bool)
-        _show_bt_names = settings.value('bt_names', True, bool)
-        _bt_refresh_rate = settings.value('bt_ref_rate', 1000, int)
-        _wifi_refresh_rate = settings.value('wifi_ref_rate', 1000, int)
-        self._bt_enabled = settings.value('bt', False, bool)
-        self._wifi_enabled = settings.value('wifi', True, bool)
+        self.settings = QtCore.QSettings('BisonCorps', 'signalum')
+        self._bt_enabled = False
+        self._wifi_enabled = False
+        # WARNING: Do not interchange the flow of the lines here-after because of data-dependency
+        self.configure_application()
+        self.load_initial_state()
+        self.saveOptionsButtonBox.accepted.connect(self.save_new_options)
 
+        self.wf_worker = None
+        self.bt_worker = None
+
+    def configure_application(self):
+        """
+        Load up the application Config and UI
+        """
         # Configure Protocols
+        self._bt_enabled = self.settings.value('bt', False, bool)
+        self._wifi_enabled = self.settings.value('wf', False, bool)
+        print(self._wifi_enabled)
         # Bluetooth
         self.bt_graph_handler = self.configure_protocol(
             self.bluetoothGraphLayout, self.bluetoothGraphToolbar, BluetoothProtocol, self._bt_enabled)
@@ -48,11 +58,53 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.wf_graph_handler = self.configure_protocol(
             self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
 
-        self.wf_worker = None
-        self.bt_worker = None
+    def load_initial_state(self):
+        """
+        Load up old application options
+        """
+        # Load Values
+        _show_bt_services = self.settings.value('bt_services', False, bool)
+        _show_bt_names = self.settings.value('bt_names', True, bool)
+        _bt_refresh_rate = self.settings.value('bt_ref_rate', 1000, int)
+        _wifi_refresh_rate = self.settings.value('wifi_ref_rate', 1000, int)
+        # Update UI with values
+        self.wifiSwitch.setChecked(self._wifi_enabled)
+        self.bluetoothSwitch.setChecked(self._bt_enabled)
+        self.bluetoothRefreshRate.setValue(_bt_refresh_rate)
+        self.wifiRefreshRate.setValue(_wifi_refresh_rate)
+        self.showBluetoothServices.setChecked(_show_bt_services)
+        self.showBluetoothNames.setChecked(_show_bt_names)
 
-    def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None,
-                     checkable=False, signal='triggered'):
+    def clear_layout(self, layout):
+        """ 
+        clears all the widgets and children within `layout` 
+        """
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().setParent(None)
+
+    def save_new_options(self):
+        """
+        Saves the options to QSettings after the click of save Button
+        """
+        self.settings.setValue('bt', self.bluetoothSwitch.isChecked())
+        self.settings.setValue('wf', self.wifiSwitch.isChecked())
+        self.settings.setValue(
+            'bt_ref_rate', self.bluetoothRefreshRate.value())
+        self.settings.setValue('wifi_ref_rate', self.wifiRefreshRate.value())
+        self.settings.setValue(
+            'bt_services', self.showBluetoothServices.isChecked())
+        self.settings.setValue('bt_names', self.showBluetoothNames.isChecked())
+        success = QtWidgets.QMessageBox.information(
+            self, 'Signalum', 'Changes Saved Successfully')
+        # Reload Application UI and protocol
+        self.clear_layout(self.bluetoothGraphLayout)
+        self.clear_layout(self.wifiGraphLayout)
+        self.clear_layout(self.bluetoothGraphToolbar)
+        self.clear_layout(self.wifiGraphToolbar)
+        self.configure_application()
+
+    def create_action(self, text, slot=None, shortcut=None, icon=None, tip=None,
+                      checkable=False, signal='triggered'):
         """ Creates an Action """
         action = QtWidgets.QAction(text, self)
         if icon is not None:
@@ -68,7 +120,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             action.setCheckable(True)
         return action
 
-    def addActions(self, target, actions):
+    def add_actions(self, target, actions):
         """ Add action to a toolbar or menu """
         for action in actions:
             if action is None:
@@ -88,9 +140,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         return None
 
     def start_protocol_thread(self, protocol, update_fn, table):
-        """ 
+        """
         Starts a thread for a protocol. The protocol devices are updated
-        based on the `update_fn` passed as arg 
+        based on the `update_fn` passed as arg
         """
         thread = QtCore.QThread(self)
         worker = Worker(
