@@ -200,9 +200,11 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """
         # self.bt_graph_handler.update_canvas(data)
         if protocol.is_wifi():
-            self.wf_graph_handler.update_canvas(data)
+            if self.wf_graph_handler:
+                self.wf_graph_handler.update_canvas(data)
         elif protocol.is_bt():
-            self.bt_graph_handler.update_canvas(data)
+            if self.bt_graph_handler:
+                self.bt_graph_handler.update_canvas(data)
         self.update_status('Running...')
 
     def start(self):
