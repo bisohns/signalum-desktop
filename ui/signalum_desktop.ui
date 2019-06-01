@@ -21,7 +21,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="adapterTab">
        <attribute name="title">
@@ -317,6 +317,33 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Wifi Devices</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="wifiGraphLayout"/>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="wifiGraphToolbar"/>
+             </item>
+             <item>
+              <widget class="Line" name="line_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="label_5">
                <property name="text">
                 <string>Bluetooth Devices</string>
@@ -344,38 +371,11 @@
               <layout class="QVBoxLayout" name="bluetoothGraphToolbar"/>
              </item>
              <item>
-              <widget class="Line" name="line_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Wifi Devices</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="wifiGraphLayout"/>
-             </item>
-             <item>
               <widget class="Line" name="line_5">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
               </widget>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="wifiGraphToolbar"/>
              </item>
             </layout>
            </item>
