@@ -10,7 +10,7 @@ from .qt import disabled_widget, signalum_desktop
 from .threads import getDevicesDataThread
 from .utils import (BluetoothProtocol, Graphing, WifiProtocol,
                     get_bluetooth_devices, get_wifi_devices)
-from .widgets import ProtocolDisabledWidget
+from .widgets import ProtocolMessageWidget
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -42,19 +42,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """ Configures a protocol for display if it has being enabled in settings """
         if enabled:
             graph_handler = Graphing(self, protocol=protocol)
-            # protocol handlers will be used in later time to configure and update graphs
-#             self.bt_graph_handler = graph_handler if protocol.is_bt() else self.bt_graph_handler
-#             self.wf_graph_handler = graph_handler if protocol.is_bt() else self.wf_graph_handler
-
-            # add graph handler canvas to their relevant layouts
-#             graph_layout = self.bluetoothGraphLayout if protocol.is_bt()  \
-#                 else self.wifiGraphLayout
-#             graph_toolbar = self.bluetoothGraphToolbar if protocol.is_bt()  \
-#                 else self.wifiGraphToolbar
             graph_layout.addWidget(graph_handler.canvas)
             graph_toolbar.addWidget(graph_handler.toolbar)
             return graph_handler
-        msg_widget = ProtocolDisabledWidget(self, protocol)
+        msg_widget = ProtocolMessageWidget(self, protocol)
         graph_layout.addWidget(msg_widget)
         return None
 

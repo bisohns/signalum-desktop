@@ -19,10 +19,10 @@ class Ui_Form(object):
         self.MessageLabel.setStyleSheet("font: 75 16pt \"Ubuntu\";")
         self.MessageLabel.setObjectName("MessageLabel")
         self.verticalLayout.addWidget(self.MessageLabel)
-        self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setStyleSheet("font: 75 14pt \"Ubuntu\";")
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
+        self.MessageBodyLabel = QtWidgets.QLabel(Form)
+        self.MessageBodyLabel.setStyleSheet("font: 75 14pt \"Ubuntu\";")
+        self.MessageBodyLabel.setObjectName("MessageBodyLabel")
+        self.verticalLayout.addWidget(self.MessageBodyLabel)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
 
@@ -33,6 +33,6 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.MessageLabel.setText(_translate("Form", "Bluetooth Mode is Disabled"))
-        self.label_2.setText(_translate("Form", "Enable it in your settings and ensure your driver is enabled as well"))
+        self.MessageBodyLabel.setText(_translate("Form", "Enable it in your settings and ensure your driver is enabled as well"))
 
 
