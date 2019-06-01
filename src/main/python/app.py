@@ -65,8 +65,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Load Values
         _show_bt_services = self.settings.value('bt_services', False, bool)
         _show_bt_names = self.settings.value('bt_names', True, bool)
-        _bt_refresh_rate = self.settings.value('bt_ref_rate', 1000, int)
-        _wifi_refresh_rate = self.settings.value('wifi_ref_rate', 1000, int)
+        _bt_refresh_rate = self.settings.value('bt_ref_rate', 1, int)
+        _wifi_refresh_rate = self.settings.value('wifi_ref_rate', 1, int)
         # Update UI with values
         self.wifiSwitch.setChecked(self._wifi_enabled)
         self.bluetoothSwitch.setChecked(self._bt_enabled)
@@ -139,14 +139,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         graph_layout.addWidget(msg_widget)
         return None
 
-    def start_protocol_thread(self, protocol, update_fn, table):
+    def start_protocol_thread(self, protocol, update_fn, table, refresh_rate):
         """
         Starts a thread for a protocol. The protocol devices are updated
         based on the `update_fn` passed as arg
         """
         thread = QtCore.QThread(self)
         worker = Worker(
-            lambda: update_fn(self), '%sThreadWorker' % protocol)
+            lambda: update_fn(self), '%sThreadWorker' % protocol, refresh_rate)
         worker.moveToThread(thread)
         # use functools to create partial functions to run on two different threads
         table_partial = partial(self.update_table, table)
@@ -168,11 +168,13 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # pass main application as parent to the fn
         # Execute only if wifi is enabled
         if wifi:
+            wifi_refresh_rate = self.settings.value('wifi_ref_rate', 1000, int)
             self.wf_worker = self.start_protocol_thread(
-                WifiProtocol, get_wifi_devices, self.wifiTable)
+                WifiProtocol, get_wifi_devices, self.wifiTable, wifi_refresh_rate)
         if bluetooth:
+            bt_refresh_rate = self.settings.value('bt_ref_rate', 1000, int)
             self.bt_worker = self.start_protocol_thread(
-                BluetoothProtocol, get_bluetooth_devices, self.bluetoothTable)
+                BluetoothProtocol, get_bluetooth_devices, self.bluetoothTable, bt_refresh_rate)
 
     def update_table(self, table, data):
         """

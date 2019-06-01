@@ -18,13 +18,14 @@ class Worker(QObject):
     sig = pyqtSignal(list)
     finished = pyqtSignal()
 
-    def __init__(self, table_fn, object_name):
+    def __init__(self, table_fn, object_name, refresh_rate):
         """
         """
         QThread.__init__(self)
         self.table_fn = table_fn
         self.setObjectName(object_name)
         self._continue = True
+        self.refresh_rate = refresh_rate
 
     @pyqtSlot()
     def operate(self):
@@ -33,7 +34,7 @@ class Worker(QObject):
         """
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.get_update)
-        self.timer.start(1000)
+        self.timer.start(self.refresh_rate * 1000)
 
     def get_update(self):
         if not self._continue:
