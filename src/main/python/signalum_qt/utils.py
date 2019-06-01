@@ -61,7 +61,7 @@ def get_bluetooth_devices(parent, **kwargs):
         bt_devices = bt.bluelyze(**kwargs)
     except AdapterUnaccessibleError:
         exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
-                    "Closing application, restart application with enabled bluetooth adapter")
+                       "Closing application, restart application with enabled bluetooth adapter")
     else:
         return bt_devices
 
@@ -113,9 +113,9 @@ class Graphing:
         self.dynamic_ax.clear()
         self.dynamic_ax.set_ylim(bottom=-100, top=0)
         # Set y-axis label
-        if self.protocol == "bt":
+        if self.protocol.is_bt():
             self.dynamic_ax.set_ylabel("BT RSSI")
-        elif self.protocol == "wf":
+        elif self.protocol.is_wifi():
             self.dynamic_ax.set_ylabel("WF RSSI")
         self.dynamic_ax.set_xlabel("TIME")
         # Hide x-ticks
@@ -149,7 +149,7 @@ class Graphing:
             else:
                 self.dynamic_ax.plot(xs, y, label=device_name)
             self.dynamic_ax.legend(loc='upper center')
-        self.dynamic_ax.figure.canvas.draw()        
+        self.dynamic_ax.figure.canvas.draw()
 
     def update_data(self, data):
         """ Update the data for display """
@@ -179,3 +179,30 @@ class Graphing:
         # append out of range values to those devices
         for i in no_val:
             self.signal_data[i].append(self.out_of_range)
+
+
+# TODO Move implementation to Signalyze CLI
+class Protocol:
+    def __init__(self, name, shortname):
+        self.name = name
+        self.shortname = shortname
+
+    def __eq__(self, pt):
+        return self.name.lower() == pt.lower() or self.shortname == pt
+
+    def is_bt(self):
+        return self.name.lower() == 'bluetooth' or self.shortname == 'bt'
+
+    def is_wifi(self):
+        return self.name.lower() == 'wifi' or self.shortname == 'wf'
+
+    def __str__(self):
+        return self.name
+
+    def __add__(self, string):
+        return self.name + string
+
+
+# Supported Application Protocols
+BluetoothProtocol = Protocol('Bluetooth', 'bt')
+WifiProtocol = Protocol('WiFi', 'wf')
