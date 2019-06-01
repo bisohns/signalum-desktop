@@ -2,6 +2,9 @@ ui_files:
 	sudo `which python` build.py ui_files
 	@echo "SIGNALUM >>> generated py code from ui"
 
+resources:
+	pyrcc5 src/main/resources/icons.qrc -o src/main/python/signalum_qt/resources.py
+
 dependencies:
 	sudo apt-get install bluetooth libbluetooth-dev
 	@echo "SIGNALUM >>> install python dependencies"

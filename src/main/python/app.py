@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 import resources
 from qt import disabled_widget, signalum_desktop
-from threads import WorkerThread
+from threads import Worker
 from utils import (BluetoothProtocol, Graphing, WifiProtocol,
                    get_bluetooth_devices, get_wifi_devices)
 from widgets import ProtocolMessageWidget
@@ -24,7 +24,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Define Some Actions
         playAction = self.createAction(
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start Reading')
-
         stopAction = self.createAction(
             '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop Reading')
 
@@ -48,6 +47,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Wifi
         self.wf_graph_handler = self.configure_protocol(
             self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
+
+        self.wf_worker = None
+        self.bt_worker = None
 
     def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None,
                      checkable=False, signal='triggered'):
@@ -85,38 +87,43 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         graph_layout.addWidget(msg_widget)
         return None
 
+    def start_protocol_thread(self, protocol, update_fn, table):
+        """ 
+        Starts a thread for a protocol. The protocol devices are updated
+        based on the `update_fn` passed as arg 
+        """
+        thread = QtCore.QThread(self)
+        worker = Worker(
+            lambda: update_fn(self), '%sThreadWorker' % protocol)
+        worker.moveToThread(thread)
+        # use functools to create partial functions to run on two different threads
+        table_partial = partial(self.update_table, table)
+        graph_partial = partial(self.update_graph, protocol)
+
+        # connect partial functions to their relevant signals expecting data
+        worker.sig.connect(graph_partial)
+        worker.sig.connect(table_partial)
+        # start threads
+        thread.started.connect(worker.operate)
+        worker.finished.connect(thread.quit)
+        thread.start()
+        return worker
+
     def load_displays(self, wifi, bluetooth):
         """
-        Load the wifi and bluetooth displays to the Application 
+        Load the wifi and bluetooth displays to the Application
         """
         # pass main application as parent to the fn
         # Execute only if wifi is enabled
         if wifi:
-            self.wf_thread = WorkerThread(
-                lambda: get_wifi_devices(self), 'WifiThreadWorker')
-            # use functools to create partial functions to run on two different threads
-            wf_table_partial = partial(self.update_table, self.wifiTable)
-            wf_graph_partial = partial(self.update_graph, "wf")
-
-            # connect partial functions to their relevant signals expecting data
-            self.wf_thread.sig.connect(wf_graph_partial)
-            self.wf_thread.sig.connect(wf_table_partial)
-            # start threads
-            self.wf_thread.start()
-
-#         if bluetooth:
-#             self.get_bt_thread = DevicesDataThread(
-#                 lambda: get_bluetooth_devices(self), 'BluetoothThread')
-#             bt_table_partial = partial(self.update_table, self.bluetoothTable)
-#             bt_graph_partial = partial(self.update_graph, "bt")
-
-#             self.get_bt_thread.sig.connect(bt_graph_partial)
-#             self.get_bt_thread.sig.connect(bt_table_partial)
-
-#             self.get_bt_thread.start()
+            self.wf_worker = self.start_protocol_thread(
+                WifiProtocol, get_wifi_devices, self.wifiTable)
+        if bluetooth:
+            self.bt_worker = self.start_protocol_thread(
+                BluetoothProtocol, get_bluetooth_devices, self.bluetoothTable)
 
     def update_table(self, table, data):
-        """ 
+        """
         Appends a data row to a QTableWidget
         """
         # Update Table Data
@@ -127,24 +134,26 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 table.setItem(n, m, _entry)
 
     def update_graph(self, protocol, data):
-        """ 
-        Update graph 
+        """
+        Update graph
         """
         # self.bt_graph_handler.update_canvas(data)
-        if protocol == "wf":
+        if protocol.is_wifi():
             self.wf_graph_handler.update_canvas(data)
-        elif protocol == "bt":
+        elif protocol.is_bt():
             self.bt_graph_handler.update_canvas(data)
 
     def start(self):
-        """ 
-        Starts reading the signalum application 
+        """
+        Starts reading the signalum application
         """
         self.load_displays(self._wifi_enabled, self._bt_enabled)
 
     def stop(self):
-        """ 
-        Stops the signalum process. This terminates the running threads 
         """
-#         self.get_bt_thread.stop_action()
-        self.wf_thread_worker.stop_action()
+        Stops the signalum process. This terminates the running threads
+        """
+        if self.bt_worker:
+            self.bt_worker.stop_action()
+        if self.wf_worker:
+            self.wf_worker.stop_action()
