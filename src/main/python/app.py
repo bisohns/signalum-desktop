@@ -30,6 +30,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         actionToolBar = self.addToolBar('Action')
         actionToolBar.setObjectName('actionToolBar')
         self.add_actions(actionToolBar, (playAction, stopAction))
+        status = self.statusBar()
+        status.setSizeGripEnabled(False)
+        status.showMessage('Ready', 5000)
 
         # Configure Application Settings
         self.settings = QtCore.QSettings('BisonCorps', 'signalum')
@@ -199,12 +202,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.wf_graph_handler.update_canvas(data)
         elif protocol.is_bt():
             self.bt_graph_handler.update_canvas(data)
+        self.update_status('Running...')
 
     def start(self):
         """
         Starts reading the signalum application
         """
         self.load_displays(self._wifi_enabled, self._bt_enabled)
+        self.update_status('Reading Started ...')
 
     def stop(self):
         """
@@ -214,8 +219,13 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.bt_worker.stop_action()
         if self.wf_worker:
             self.wf_worker.stop_action()
+        self.update_status('Reading Stopped')
 
     def closeEvent(self, event):
         """ Custom close event handler """
         self.stop()
         super(App, self).closeEvent(event)
+
+    def update_status(self, message):
+        """ Updates the Status Bar """
+        self.statusBar().showMessage(message, 5000)
