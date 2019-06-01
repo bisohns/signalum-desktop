@@ -179,7 +179,6 @@ class Graphing:
             self.signal_data[i].append(self.out_of_range)
 
 
-# TODO Move implementation to Signalyze CLI
 class Protocol:
     def __init__(self, name, shortname):
         self.name = name
