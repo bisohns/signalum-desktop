@@ -4,12 +4,12 @@ ui_files:
 	scripts/build_ui_files.sh
 
 dependencies:
-	@echo "SIGNALUM >>> installing apt dependencies"
 	sudo apt-get install bluetooth libbluetooth-dev
 	@echo "SIGNALUM >>> install python dependencies"
 	pip install -r requirements.txt
 
 install:
+	@echo "SIGNALUM >>> installation using active development repo"
 	@echo "SIGNALUM >>> making dependencies"
 	make dependencies
 	sudo apt  install --no-install-recommends gnome-panel
@@ -26,5 +26,4 @@ development:
 uninstall:
 	pip uninstall signalum
 	sudo rm -rf /usr/local/bin/signalum
-	- sudo rm ~/Desktop/signalum.desktop
 	@echo "SIGNALUM >>> uninstallation complete"
