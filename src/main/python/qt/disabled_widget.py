@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file './disabled_widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.1
+# Created by: PyQt5 UI code generator 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -34,5 +33,4 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.MessageLabel.setText(_translate("Form", "Bluetooth Mode is Disabled"))
         self.MessageBodyLabel.setText(_translate("Form", "Enable it in your settings and ensure your driver is enabled as well"))
-
 

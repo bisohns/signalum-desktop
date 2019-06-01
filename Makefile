@@ -16,6 +16,20 @@ dev:
 	@echo "SIGNALUM >>> starting gui program"
 	sudo `which python` build.py run
 
+freeze:
+	# freeze app
+	make ui_files
+	@echo "SIGNALUM >>> freezing application ..."
+	`which python` build.py freeze --debug
+	@echo "SIGNALUM >>> completed freeze"
+
+installer:
+	# make installer
+	make ui_files
+	@echo "SIGNALUM >>> creating installer"
+	`which python` build.py installer
+	@echo "SIGNALUM >>> created installer"
+
 uninstall:
 	pip uninstall -r requirements/linux.txt
 	@echo "SIGNALUM >>> uninstallation complete"
