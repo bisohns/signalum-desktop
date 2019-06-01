@@ -18,7 +18,13 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
-        self.setupUi(self)
+
+        # Define Some Actions
+        playAction = self.createAction(
+            '&Play...', self.start, 'Ctrl + P', 'start', 'Start Reading')
+
+        stopAction = self.createAction(
+            '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop Reading')
 
         # Configure Application Settings
         settings = QtCore.QSettings('BisonCorps', 'signalum')
@@ -26,17 +32,16 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         _show_bt_names = settings.value('bt_names', True, bool)
         _bt_refresh_rate = settings.value('bt_ref_rate', 1000, int)
         _wifi_refresh_rate = settings.value('wifi_ref_rate', 1000, int)
-        _bt = settings.value('bt', False, bool)
-        _wifi = settings.value('wifi', True, bool)
+        self._bt_enabled = settings.value('bt', False, bool)
+        self._wifi_enabled = settings.value('wifi', True, bool)
 
         # Configure Protocols
         # Bluetooth
-        self.bt_graph_handler = self.configure_protocol(self.bluetoothGraphLayout,
-                                                        self.bluetoothGraphToolbar, BluetoothProtocol, _bt)
+        self.bt_graph_handler = self.configure_protocol(
+            self.bluetoothGraphLayout, self.bluetoothGraphToolbar, BluetoothProtocol, self._bt_enabled)
         # Wifi
-        self.wf_graph_handler = self.configure_protocol(self.wifiGraphLayout,
-                                                        self.wifiGraphToolbar, WifiProtocol, _wifi)
-        self.load_displays(_wifi, _bt)
+        self.wf_graph_handler = self.configure_protocol(
+            self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
 
     def configure_protocol(self, graph_layout, graph_toolbar, protocol, enabled=False):
         """ Configures a protocol for display if it has being enabled in settings """
@@ -50,7 +55,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         return None
 
     def load_displays(self, wifi, bluetooth):
-        """ Load the wifi and bluetooth displays to the Application """
+        """
+        Load the wifi and bluetooth displays to the Application 
+        """
         # pass main application as parent to the fn
         # Execute only if wifi is enabled
         if wifi:
@@ -78,7 +85,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.get_bt_thread.start()
 
     def update_table(self, table, data):
-        """ Appends a data row to a QTableWidget"""
+        """ 
+        Appends a data row to a QTableWidget
+        """
         # Update Table Data
         table.setRowCount(len(data))
         for n, row in enumerate(data):
@@ -87,12 +96,27 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 table.setItem(n, m, _entry)
 
     def update_graph(self, protocol, data):
-        """ Update graph """
+        """ 
+        Update graph 
+        """
         # self.bt_graph_handler.update_canvas(data)
         if protocol == "wf":
             self.wf_graph_handler.update_canvas(data)
         elif protocol == "bt":
             self.bt_graph_handler.update_canvas(data)
+
+    def start(self):
+        """ 
+        Starts reading the signalum application 
+        """
+        self.load_displays(self._wifi_enabled, self._bt_enabled)
+
+    def stop(self):
+        """ 
+        Stops the signalum process. This terminates the running threads 
+        """
+        self.get_bt_thread.exit()
+        self.get_wf_thread.exit()
 
 
 def _run():
