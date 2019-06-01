@@ -1,6 +1,6 @@
 <p align="center">
   <img src="assets/signalum.png" height="100" /><br/>
-  <span><b style="font-size:30px">Signalum Desktop</b>
+  <span><b style="font-size:40px">Signalum Desktop</b>
 </p>
 <br>
 A Desktop application for the [Signalyze CLI Tool](https://github.com/bisoncorps/signalum)
