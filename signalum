@@ -1,4 +1,0 @@
-#!/bin/sh
-CURRENT_PYTHON="$(which python)"
-
-sudo $CURRENT_PYTHON run.py
