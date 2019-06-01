@@ -323,7 +323,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -405,8 +405,8 @@ class Ui_MainWindow(object):
         item = self.wifiTable.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "Channel"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.devicesTab), _translate("MainWindow", "Devices"))
-        self.label_5.setText(_translate("MainWindow", "Bluetooth Devices"))
         self.label_4.setText(_translate("MainWindow", "Wifi Devices"))
+        self.label_5.setText(_translate("MainWindow", "Bluetooth Devices"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.graphTab), _translate("MainWindow", "Signal Graph"))
         self.label_6.setText(_translate("MainWindow", "Bluetooth"))
         self.showBluetoothServices.setText(_translate("MainWindow", "Show bluetooth services"))
