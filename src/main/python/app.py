@@ -45,6 +45,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         self.wf_worker = None
         self.bt_worker = None
+        self.is_running = False
 
     def configure_application(self):
         """
@@ -208,18 +209,20 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """
         Starts reading the signalum application
         """
-        self.load_displays(self._wifi_enabled, self._bt_enabled)
-        self.update_status('Reading Started ...')
+        if not self.is_running:
+            self.load_displays(self._wifi_enabled, self._bt_enabled)
+            self.update_status('Reading Started ...')
 
     def stop(self):
         """
         Stops the signalum process. This terminates the running threads
         """
-        if self.bt_worker:
-            self.bt_worker.stop_action()
-        if self.wf_worker:
-            self.wf_worker.stop_action()
-        self.update_status('Reading Stopped')
+        if self.is_running:
+            if self.bt_worker:
+                self.bt_worker.stop_action()
+            if self.wf_worker:
+                self.wf_worker.stop_action()
+            self.update_status('Reading Stopped')
 
     def closeEvent(self, event):
         """ Custom close event handler """
