@@ -18,6 +18,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
+        self.setupUi(self)
 
         # Define Some Actions
         playAction = self.createAction(
@@ -25,6 +26,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         stopAction = self.createAction(
             '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop Reading')
+
+        actionToolBar = self.addToolBar('Action')
+        actionToolBar.setObjectName('actionToolBar')
+        self.addActions(actionToolBar, (playAction, stopAction))
 
         # Configure Application Settings
         settings = QtCore.QSettings('BisonCorps', 'signalum')
@@ -42,6 +47,31 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Wifi
         self.wf_graph_handler = self.configure_protocol(
             self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
+
+    def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None,
+                     checkable=False, signal='triggered'):
+        """ Creates an Action """
+        action = QtWidgets.QAction(text, self)
+        if icon is not None:
+            action.setIcon(QtGui.QIcon(':/%s.png' % icon))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            action.triggered.connect(slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
+
+    def addActions(self, target, actions):
+        """ Add action to a toolbar or menu """
+        for action in actions:
+            if action is None:
+                target.addSeparator()
+            else:
+                target.addAction(action)
 
     def configure_protocol(self, graph_layout, graph_toolbar, protocol, enabled=False):
         """ Configures a protocol for display if it has being enabled in settings """

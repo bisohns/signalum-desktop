@@ -7,7 +7,7 @@ dependencies:
 	@echo "SIGNALUM >>> install python dependencies"
 	pip install -r requirements/linux.txt
 
-development:
+dev:
 	# build ui files
 	make ui_files
 	sudo `which python` build.py run

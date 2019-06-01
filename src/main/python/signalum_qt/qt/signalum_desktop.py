@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file './signalum_desktop.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.2
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -420,4 +421,5 @@ class Ui_MainWindow(object):
         self.wifiSwitch.setText(_translate("MainWindow", "Turn Wifi on"))
         self.checkBox_3.setText(_translate("MainWindow", "Turn Bluetooth on"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.optionsTab), _translate("MainWindow", "Options"))
+
 
