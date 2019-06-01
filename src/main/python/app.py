@@ -50,7 +50,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Configure Protocols
         self._bt_enabled = self.settings.value('bt', False, bool)
         self._wifi_enabled = self.settings.value('wf', False, bool)
-        print(self._wifi_enabled)
         # Bluetooth
         self.bt_graph_handler = self.configure_protocol(
             self.bluetoothGraphLayout, self.bluetoothGraphToolbar, BluetoothProtocol, self._bt_enabled)
@@ -211,3 +210,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.bt_worker.stop_action()
         if self.wf_worker:
             self.wf_worker.stop_action()
+
+    def closeEvent(self, event):
+        """ Custom close event handler """
+        self.stop()
+        super(App, self).closeEvent(event)
