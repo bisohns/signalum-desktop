@@ -17,7 +17,7 @@ if __name__ == '__main__':
     app.setApplicationName("Signalum")
     a = App()
     splash.showMessage("Loading application")
-    a.setWindowTitle("Signalum Desktop - Powered by BisonCorps")
+    a.setWindowTitle("Signalum Desktop - (BisonCorps, 2019)")
     a.show()
     splash.showMessage("Finished loading application")
     splash.finish(a)

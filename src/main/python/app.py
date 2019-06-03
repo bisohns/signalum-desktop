@@ -22,18 +22,21 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.setupUi(self)
 
         # Define Some Actions
-        playAction = self.create_action(
+        self.playAction = self.create_action(
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start/Continue Scanning')
-        stopAction = self.create_action(
+        self.stopAction = self.create_action(
             '&Stop...', self.stop, 'Ctrl + B', 'stop', 
             'Stop/Pause Scanning')
 
-        actionToolBar = self.addToolBar('Action')
-        actionToolBar.setObjectName('actionToolBar')
-        self.add_actions(actionToolBar, (playAction, stopAction))
+        self.actionToolBar = self.addToolBar('Action')
+        self.actionToolBar.setObjectName('actionToolBar')
+        self.add_actions(self.actionToolBar, (self.playAction, ))
         status = self.statusBar()
         status.setSizeGripEnabled(False)
         status.showMessage('Ready', 5000)
+
+        # get options tab index
+        self.optionsTabIndex = self.tabWidget.indexOf(self.optionsTab)
 
         # Configure Application Settings
         self.settings = QtCore.QSettings('BisonCorps', 'signalum')
@@ -99,7 +102,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             'bt_services', self.showBluetoothServices.isChecked())
         self.settings.setValue('bt_names', self.showBluetoothNames.isChecked())
         success = QtWidgets.QMessageBox.information(
-            self, 'Signalum', 'Changes Saved Successfully')
+            self, 'Signalum Desktop', 'Changes Saved Successfully')
         # Reload Application UI and protocol
         self.clear_layout(self.bluetoothGraphLayout)
         self.clear_layout(self.wifiGraphLayout)
@@ -131,6 +134,31 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 target.addSeparator()
             else:
                 target.addAction(action)
+    
+    def remove_actions(self, target, actions):
+        """ Remove actions from a toolbar or menu """
+        for action in actions:
+            if action is None:
+                pass
+            else:
+                target.removeAction(action)
+    
+    def play_stop_transition(self, action="play", color="green"):
+        """ Transition from remove_action to add_action """
+        if action == "play":
+            self.remove_actions(self.actionToolBar, (self.playAction, ))
+            self.add_actions(self.actionToolBar, (self.stopAction, ))
+            if self.tabWidget.currentIndex() == self.optionsTabIndex:
+                self.tabWidget.setCurrentIndex(2)
+            # disable options tab during run
+            self.tabWidget.setTabEnabled(self.optionsTabIndex, False)
+        elif action == "stop":
+            self.remove_actions(self.actionToolBar, (self.stopAction, ))
+            self.add_actions(self.actionToolBar, (self.playAction, ))
+            # enable options tab during stop
+            self.tabWidget.setTabEnabled(self.optionsTabIndex, True)
+        # change color of actionToolbar
+        self.actionToolBar.setStyleSheet("background-color: %s" %color)
 
     def configure_protocol(self, graph_layout, graph_toolbar, protocol, enabled=False):
         """ Configures a protocol for display if it has being enabled in settings """
@@ -220,19 +248,23 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.load_displays(self._wifi_enabled, self._bt_enabled)
             self.is_running = True
             self.update_status('Starting, may take a while ...')
+            # transition from play to stop
+            self.play_stop_transition()
 
     def stop(self):
         """
         Stops the signalum process. This terminates the running threads
         """
-        self.update_status('Stopping, may take a while...', color="red")
+        stop_color = "red"
+        self.update_status('Stopping, may take a while...', color=stop_color)
         if self.is_running:
             if self.bt_worker:
                 self.bt_worker.stop_action()
             if self.wf_worker:
                 self.wf_worker.stop_action()
-            self.update_status('Stopping, may take a while...', color="red")
+            self.update_status('Stopping, may take a while...', color=stop_color)
             self.is_running = False
+            self.play_stop_transition(action="stop", color=stop_color)
 
     def custom_quit(self, thread):
         """ Custom quit thread """
