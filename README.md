@@ -10,9 +10,7 @@ A Desktop application for the <a href="https://github.com/bisoncorps/signalum" t
 This application was bootstrapped with <a href="https://github.com/mherrmann/fbs" title="fbs">Fman Build system</a>
 <br> <br>
 
-![Signal-Graph](assets/signal-graph.png)
-
-![Devices](assets/devices.png)
+![Demo](assets/demo.gif)
 
 
 ### Development
