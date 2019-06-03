@@ -4,6 +4,7 @@ ui_files:
 
 resources:
 	pyrcc5 src/main/resources/icons.qrc -o src/main/python/signalum_qt/resources.py
+	@echo "SIGNALUM >>> transformed resources complete"
 
 dependencies:
 	sudo apt-get install bluetooth libbluetooth-dev

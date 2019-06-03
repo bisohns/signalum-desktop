@@ -23,9 +23,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         # Define Some Actions
         playAction = self.create_action(
-            '&Play...', self.start, 'Ctrl + P', 'start', 'Start Reading')
+            '&Play...', self.start, 'Ctrl + P', 'start', 'Start/Continue Scanning')
         stopAction = self.create_action(
-            '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop Reading')
+            '&Stop...', self.stop, 'Ctrl + B', 'stop', 
+            'Stop/Pause Scanning')
 
         actionToolBar = self.addToolBar('Action')
         actionToolBar.setObjectName('actionToolBar')
@@ -158,13 +159,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # use functools to create partial functions to run on two different threads
         table_partial = partial(self.update_table, table)
         graph_partial = partial(self.update_graph, protocol)
+        quit_partial = partial(self.custom_quit, thread)
 
         # connect partial functions to their relevant signals expecting data
         worker.sig.connect(graph_partial)
         worker.sig.connect(table_partial)
         # start threads
         thread.started.connect(worker.operate)
-        worker.finished.connect(thread.quit)
+        worker.finished.connect(quit_partial)
         thread.start()
         return worker
 
@@ -191,6 +193,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         table.setRowCount(len(data))
         for n, row in enumerate(data):
             for m, cell in enumerate(row):
+                if cell == None:
+                    cell = "N/A"
                 _entry = QtWidgets.QTableWidgetItem(str(cell))
                 table.setItem(n, m, _entry)
 
@@ -202,10 +206,11 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         if protocol.is_wifi():
             if self.wf_graph_handler:
                 self.wf_graph_handler.update_canvas(data)
+                self.update_status('Running...')
         elif protocol.is_bt():
             if self.bt_graph_handler:
                 self.bt_graph_handler.update_canvas(data)
-        self.update_status('Running...')
+                self.update_status('Running...')
 
     def start(self):
         """
@@ -213,24 +218,34 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """
         if not self.is_running:
             self.load_displays(self._wifi_enabled, self._bt_enabled)
-            self.update_status('Reading Started ...')
+            self.is_running = True
+            self.update_status('Starting, may take a while ...')
 
     def stop(self):
         """
         Stops the signalum process. This terminates the running threads
         """
+        self.update_status('Stopping, may take a while...', color="red")
         if self.is_running:
             if self.bt_worker:
                 self.bt_worker.stop_action()
             if self.wf_worker:
                 self.wf_worker.stop_action()
-            self.update_status('Reading Stopped')
+            self.update_status('Stopping, may take a while...', color="red")
+            self.is_running = False
+
+    def custom_quit(self, thread):
+        """ Custom quit thread """
+        if thread.isRunning():
+            thread.quit
+        self.update_status("Stopped", color="red", timeout=0)
 
     def closeEvent(self, event):
         """ Custom close event handler """
         self.stop()
         super(App, self).closeEvent(event)
 
-    def update_status(self, message):
+    def update_status(self, message, color="green", timeout=5000):
         """ Updates the Status Bar """
-        self.statusBar().showMessage(message, 5000)
+        self.statusBar().setStyleSheet("color: %s" %color)
+        self.statusBar().showMessage(message, timeout)
