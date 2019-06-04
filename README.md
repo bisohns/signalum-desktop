@@ -1,6 +1,6 @@
 <p align="center">
   <img src="src/main/resources/base/signalum.png" height="100" /><br/>
-  <span> <center> <h1 style="font-size: 40px;">Signalum Desktop</h1> </center> </span>
+  <span> <b style="font-size: 40px;">Signalum Desktop</b></span>
 </p>
 <br>
 
