@@ -24,8 +24,12 @@ This application was bootstrapped with <a href="https://github.com/mherrmann/fbs
 
 ```bash
   # make ui files and run in development mode
-  make development
+  make dev
 ```
+
+### Demo
+
+![Demo](assets/output.gif)
 
 
 After modifying any `.ui` file run the `make ui_files` command to update
