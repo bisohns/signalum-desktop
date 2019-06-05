@@ -15,12 +15,12 @@ This application was bootstrapped with <a href="https://github.com/mherrmann/fbs
 ![Devices](assets/devices.png)
 
 <br><br>
-Written entirely in Python3, Sparrow-wifi has been designed for the following scenarios:
+Written entirely in Python3, Signalum Desktop has been designed for the following scenarios:
 
 - Basic wifi SSID and Bluetooth identification
 - Wifi and Bluetooth RSSI Values calculation
 - Bluetooth identification
-- Import/Export - Ability to import and export to/from XLS, CSV and JSON for easy integration and revisiualization
+- Export - Ability to export values to excel worksheet
 
 
 
