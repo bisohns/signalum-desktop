@@ -109,6 +109,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """
         Request export save location before handing off to exporter function
         """
+        # use model to get table headers instead of table
         model = table.model()
         if not filename:
             filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", " ", '.xls(*.xls)')
@@ -120,7 +121,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
     
     def export(self, model, sheetbook):
         """
-        Export from model to a defined sheetbook
+        Export from model data to a defined sheetbook
         """
         # write out the headers
         for i in range(model.columnCount()):
