@@ -102,6 +102,9 @@ class Graphing:
         # set toolbar for canvas and bind toolbar to parent for render
         self.toolbar = NavigationToolbar(self.canvas, parent)
         self.dynamic_ax = self.canvas.figure.subplots()
+        chartBox = self.dynamic_ax.get_position()
+        # resize graph to 0.8 of origninal width to create space for external legend
+        self.dynamic_ax.set_position([chartBox.x0, chartBox.y0, chartBox.width*0.8, chartBox.height])
         self.protocol = protocol
         self.configure_graph()
         # TODO: allow setting of graph color
@@ -159,7 +162,8 @@ class Graphing:
                 self.dynamic_ax.plot(x_new, y_smooth, label=device_name)
             else:
                 self.dynamic_ax.plot(xs, y, label=device_name)
-            self.dynamic_ax.legend(loc='upper center')
+            # create legend outside plot
+            self.dynamic_ax.legend(loc='upper center', bbox_to_anchor=(1.1, 0.8), shadow=True, ncol=1)
         self.dynamic_ax.figure.canvas.draw()
 
     def update_data(self, data):
