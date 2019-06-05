@@ -30,6 +30,16 @@ def calltracker(func):
     return wrapper
 
 
+def is_running(func):
+    """
+    Make a function dependent on a self.is_running
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if args[0].is_running:
+            return func(*args, **kwargs)
+    return wrapper
+
 # calltracker implicity tracks function call
 @calltracker
 def exit_error_msg(parent, title, message):

@@ -6,11 +6,13 @@ from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import resources
+import signalum_qt.resources
+import xlwt
 from qt import disabled_widget, signalum_desktop
 from threads import Worker
 from utils import (BluetoothProtocol, Graphing, WifiProtocol,
-                   get_bluetooth_devices, get_wifi_devices)
+                   get_bluetooth_devices, get_wifi_devices,
+                   is_running)
 from widgets import ProtocolMessageWidget
 
 
@@ -38,6 +40,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # get options tab index
         self.optionsTabIndex = self.tabWidget.indexOf(self.optionsTab)
 
+        # configure export buttons
+        self.configure_export_buttons()
+
         # Configure Application Settings
         self.settings = QtCore.QSettings('BisonCorps', 'signalum')
         self._bt_enabled = False
@@ -50,6 +55,17 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.wf_worker = None
         self.bt_worker = None
         self.is_running = False
+
+    def configure_export_buttons(self):
+        """
+        Configure and connect the export buttons
+        """
+        btPartial = partial(self.exporter, self.bluetoothTable)
+        wfPartial = partial(self.exporter, self.wifiTable)
+        # connect save buttons to their tables
+        self.btExportButton.clicked.connect(btPartial)
+        self.wfExportButton.clicked.connect(wfPartial)
+
 
     def configure_application(self):
         """
@@ -88,6 +104,39 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().setParent(None)
+
+    def exporter(self, table, filename=None):
+        """
+        Request export save location before handing off to exporter function
+        """
+        model = table.model()
+        if not filename:
+            filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", " ", '.xls(*.xls)')
+        if filename:
+            wb = xlwt.Workbook(filename)
+            sheetbook = wb.add_sheet("sheet", cell_overwrite_ok=True)
+            self.export(model, sheetbook)
+            wb.save(filename[0])
+    
+    def export(self, model, sheetbook):
+        """
+        Export from model to a defined sheetbook
+        """
+        # write out the headers
+        for i in range(model.columnCount()):
+            text = model.headerData(i, QtCore.Qt.Horizontal)
+            sheetbook.write(0, i+1, text)
+        for i in range(model.rowCount()):
+            text = model.headerData(i, QtCore.Qt.Vertical)
+            sheetbook.write(i+1, 0, text)
+
+        for c in range(model.columnCount()):
+            for r in range(model.rowCount()):
+                try:
+                    celltext = str(model.data(model.index(r, c)))
+                    sheetbook.write(r+1, c+1, celltext)
+                except AttributeError:
+                    pass
 
     def save_new_options(self):
         """
@@ -213,6 +262,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.bt_worker = self.start_protocol_thread(
                 BluetoothProtocol, get_bluetooth_devices, self.bluetoothTable, bt_refresh_rate)
 
+    @is_running
     def update_table(self, table, data):
         """
         Appends a data row to a QTableWidget
@@ -226,6 +276,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 _entry = QtWidgets.QTableWidgetItem(str(cell))
                 table.setItem(n, m, _entry)
 
+    @is_running
     def update_graph(self, protocol, data):
         """
         Update graph
