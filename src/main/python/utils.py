@@ -148,6 +148,9 @@ class Graphing:
             # list of rssi values will be plotted on the y axis
             y = np.array(i)
             y = y[self.limit:]
+            #append out of range to name
+            if y[-1] == self.out_of_range:
+                device_name = device_name + "--OOR --"
             # check if points are enough to interpolate on
             if len(i) > 2:
                 f = interp1d(xs, y, kind='nearest')
