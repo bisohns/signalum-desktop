@@ -38,13 +38,24 @@ Written entirely in Python3, Signalum Desktop has been designed for the followin
 
 After modifying any `.ui` file run the `make ui_files` command to update
 
-### Demo
+## Demo
 
-Scan for devices
+Simple usage of Signalum Desktop to monitor multiple devices
 
 ![Demo](assets/output.gif)
 
+To view device signal strength, click on device in table and the device graph will pop up <br/>
+
 ![Individual device demo](assets/range.gif)
+
+## Contributors
+
+Much thanks and appreciation to everyone who made this project possible
+
+- [Manasseh Mmadu](https//mensaah.github.io)
+- [Diretnan Domnan](https://github.com/deven96)
+- [Wisdom Praise](https://github.com/wizzywit)
+- Engr. Ajao Lukman
 
 ## TODO
 
