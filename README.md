@@ -52,8 +52,8 @@ To view device signal strength, click on device in table and the device graph wi
 
 Much thanks and appreciation to everyone who made this project possible
 
-- [Manasseh Mmadu](https//mensaah.github.io)
-- [Diretnan Domnan](https://github.com/deven96)
+- [Manasseh Mmadu](https://mensaah.github.io)
+- [Diretnan Domnan](https://diretnandomnan.webnode.com)
 - [Wisdom Praise](https://github.com/wizzywit)
 - Engr. Ajao Lukman
 
