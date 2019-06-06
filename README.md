@@ -36,13 +36,15 @@ Written entirely in Python3, Signalum Desktop has been designed for the followin
   make dev
 ```
 
+After modifying any `.ui` file run the `make ui_files` command to update
+
 ### Demo
+
+Scan for devices
 
 ![Demo](assets/output.gif)
 
-
-After modifying any `.ui` file run the `make ui_files` command to update
-
+![Individual device demo](assets/range.gif)
 
 ## TODO
 

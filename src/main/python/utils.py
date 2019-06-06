@@ -4,6 +4,7 @@ import functools
 import sys
 
 import numpy as np
+import matplotlib
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import \
@@ -36,6 +37,7 @@ def is_running(func):
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        # assuming args[0] is self
         if args[0].is_running:
             return func(*args, **kwargs)
     return wrapper
@@ -102,6 +104,12 @@ class Graphing:
         # set toolbar for canvas and bind toolbar to parent for render
         self.toolbar = NavigationToolbar(self.canvas, parent)
         self.dynamic_ax = self.canvas.figure.subplots()
+
+        # popup config for single device
+        self.configure_device_graph()
+
+        # self.devax.set_visible(False)
+
         chartBox = self.dynamic_ax.get_position()
         # resize graph to 0.8 of origninal width to create space for external legend
         self.dynamic_ax.set_position([chartBox.x0, chartBox.y0, chartBox.width*0.8, chartBox.height])
@@ -116,6 +124,17 @@ class Graphing:
         self.limit = -30
         # impossibly low value to indicate out of range
         self.out_of_range = -200
+
+    def configure_device_graph(self):
+        """
+        Configure range plot of device
+        """
+        self.devaxcanvas = FigureCanvas(Figure())
+        self.devax = self.devaxcanvas.figure.add_subplot(111, polar=True)
+        self.devax.set_facecolor('black')
+        self.devax.set_xticklabels([])
+        self.devax.set_rmin(-100)
+        self.devax.cla()
 
     def configure_graph(self):
         """ 
@@ -194,6 +213,62 @@ class Graphing:
         # append out of range values to those devices
         for i in no_val:
             self.signal_data[i].append(self.out_of_range)
+    
+    def plot_device(self, mac):
+        """
+        Show plot of individual device
+        """
+        # self.configure_device_graph()
+        signal = self.signal_data[mac][-1]
+        device = self.name_data[mac]
+        print(signal, device)
+        self.devax.clear()
+        self.devax.set_rmin(-100)
+        if signal <= 0 and signal >= -100:
+            # convert signal to radius
+            radius = 100 + signal
+            circle = matplotlib.patches.Circle((0, 0), radius=radius, transform=self.devax.transData._b, color="red", alpha=0.4)
+            self.devax.add_artist(circle)
+            self.devax.set_ylabel(f"RSSI of {device} = {signal} ")
+        else:
+            self.devax.set_ylabel(f"{device} is out of range")
+        self.devax.set_xticklabels([])
+        self.devax.figure.canvas.draw()
+
+
+class PopUp(QtWidgets.QDialog):
+    """
+    Shows real time updated widget of device signal
+    """
+    # self variables are set on click of a table cell
+    table = None
+    row = None
+    mac_address = None
+    graph_handler = None
+
+    def __init__(self, *args, **kwargs):
+        QtWidgets.QDialog.__init__(self)
+        # no content on layout yet, so set flag to False
+        self.has_content = False
+        # tracks each device signal by it's unique MAC Address
+        self.columname = "MAC Address"
+        self.setLayout(QtWidgets.QVBoxLayout())
+    
+    def add_content(self, content):
+        """
+        Add Canvas to PopUp's layout and set flag
+        """
+        self.layout().addWidget(content)
+        self.has_content = True
+
+    def closeEvent(self, event):
+        """
+        Set variables to None once more
+        """
+        self.table = None
+        self.row = None
+        self.mac_address = None
+        self.graph_handler = None
 
 
 class Protocol:

@@ -11,9 +11,11 @@ import xlwt
 from qt import disabled_widget, signalum_desktop
 from threads import Worker
 from utils import (BluetoothProtocol, Graphing, WifiProtocol,
+                   PopUp,
                    get_bluetooth_devices, get_wifi_devices,
                    is_running)
 from widgets import ProtocolMessageWidget
+
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -36,6 +38,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         status = self.statusBar()
         status.setSizeGripEnabled(False)
         status.showMessage('Ready', 5000)
+
+        # popup
+        self.popup = PopUp()
 
         # get options tab index
         self.optionsTabIndex = self.tabWidget.indexOf(self.optionsTab)
@@ -80,6 +85,45 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Wifi
         self.wf_graph_handler = self.configure_protocol(
             self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
+        
+        # connect tables to cellClick
+        btPartial = partial(self.cellClicked, self.bt_graph_handler, self.bluetoothTable)
+        wfPartial = partial(self.cellClicked, self.wf_graph_handler, self.wifiTable)
+
+        self.bluetoothTable.cellClicked.connect(btPartial)
+        self.wifiTable.cellClicked.connect(wfPartial)
+
+    def cellClicked(self, graph_handler, table, row, column):
+        """
+        Event handler for table cell click
+        """
+        # reinstantiate popup to get different plot
+        self.popup = PopUp()
+        # set current device details for polar plot
+        self.popup.table = table
+        self.popup.row = row
+        self.popup.mac_address = self.getsamerowcell(table, row, self.popup.columname)
+        self.popup.graph_handler = graph_handler
+        print("Device %s was clicked" %self.popup.mac_address)
+        # avoid adding multiple content by checking axis
+        if not self.popup.has_content:
+            self.popup.add_content(self.popup.graph_handler.devaxcanvas)
+        else:
+            print("Already has content", self.popup.graph_handler.devaxcanvas)     
+        self.popup.graph_handler.plot_device(self.popup.mac_address)
+        self.popup.exec_()
+
+    def getsamerowcell(self, table, row, columname):
+        """
+        Retrieve text from particular column
+        """
+        headercount = table.columnCount()
+        for x in range(0, headercount, 1):
+            headertext = table.horizontalHeaderItem(x).text()
+            if columname == headertext:
+                cell = table.item(row, x).text()
+                return cell
+
 
     def load_initial_state(self):
         """
@@ -112,7 +156,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # use model to get table headers instead of table
         model = table.model()
         if not filename:
-            filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", " ", '.xls(*.xls)')
+            filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "signalum", '.xls(*.xls)')
         if filename:
             wb = xlwt.Workbook(filename)
             sheetbook = wb.add_sheet("sheet", cell_overwrite_ok=True)
@@ -283,14 +327,17 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         Update graph
         """
         # self.bt_graph_handler.update_canvas(data)
+        handler = None
         if protocol.is_wifi():
-            if self.wf_graph_handler:
-                self.wf_graph_handler.update_canvas(data)
-                self.update_status('Running...')
+            handler = self.wf_graph_handler
         elif protocol.is_bt():
-            if self.bt_graph_handler:
-                self.bt_graph_handler.update_canvas(data)
-                self.update_status('Running...')
+            handler = self.bt_graph_handler
+        if handler:
+            handler.update_canvas(data)
+            # update individual canvas
+            if self.popup.mac_address:
+                self.popup.graph_handler.plot_device(self.popup.mac_address)
+            self.update_status("Running ...")
 
     def start(self):
         """
