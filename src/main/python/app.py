@@ -107,7 +107,12 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         print("Device %s was clicked" %self.popup.mac_address)
         # avoid adding multiple content by checking axis
         if not self.popup.has_content:
-            self.popup.add_content(self.popup.graph_handler.devaxcanvas)
+            try:
+                self.popup.add_content(self.popup.graph_handler.devaxcanvas)
+            except RuntimeError:
+                # reconfigure graph to set FIgureCanvasQTAgg
+                self.popup.graph_handler.configure_device_graph()
+                self.popup.add_content(self.popup.graph_handler.devaxcanvas)
         else:
             print("Already has content", self.popup.graph_handler.devaxcanvas)     
         self.popup.graph_handler.plot_device(self.popup.mac_address)

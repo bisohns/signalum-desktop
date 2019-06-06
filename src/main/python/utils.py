@@ -229,12 +229,11 @@ class Graphing:
             radius = 100 + signal
             circle = matplotlib.patches.Circle((0, 0), radius=radius, transform=self.devax.transData._b, color="red", alpha=0.4)
             self.devax.add_artist(circle)
-            self.devax.set_ylabel(f"RSSI of {device} = {signal} ")
+            self.devax.set_xlabel(f"RSSI of {device} = {signal} ")
         else:
-            self.devax.set_ylabel(f"{device} is out of range")
+            self.devax.set_xlabel(f"{device} is out of range")
         self.devax.set_xticklabels([])
         self.devax.figure.canvas.draw()
-
 
 class PopUp(QtWidgets.QDialog):
     """
