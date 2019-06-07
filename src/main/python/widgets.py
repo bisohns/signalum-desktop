@@ -1,4 +1,10 @@
-""" Custom Widgets """
+""" Custom Widgets 
+
+This application uses Qt Designer to for it's Ui. Changes made to the Auto-generated files
+can be lost any moment a new build is made. To update a change, subclass the Ui file with
+Qt Widget used. The subclassed widget should hence be used
+
+"""
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 

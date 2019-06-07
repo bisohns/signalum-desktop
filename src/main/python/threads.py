@@ -42,7 +42,6 @@ class Worker(QObject):
             self.timer.stop()
             self.finished.emit()
         else:
-            # For cases where the adapter is off. No readings are return
             try:
                 values, _ = self.table_fn.__call__()
             except AdapterUnaccessibleError:
@@ -51,8 +50,6 @@ class Worker(QObject):
                                f"You can deactivate the {self.protocol} sensing in your settings"
                                "if adapter is not available")
                 self._continue = False
-            except (ValueError, TypeError):
-                pass
             else:
                 if not values:
                     values = []

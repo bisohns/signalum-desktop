@@ -5,7 +5,9 @@
 <br>
 
 
-A Desktop application on the <a href="https://github.com/bisoncorps/signalum" title="Signalum Library/CLI Tool">Signalum Python Library/CLI Tool</a>
+A Desktop application on the <a href="https://github.com/bisoncorps/signalum" title="Signalum Library/CLI Tool">Signalum Python Library/CLI Tool</a>.
+The Signalum Desktop application is an attempt to develop a single tool for analysing and visualizing your wireless environment over a range of Bluetooth Devices, WiFi Devices and hopefully more.
+
 
 This application was bootstrapped with <a href="https://github.com/mherrmann/fbs" title="fbs">Fman Build system</a>
 <br> <br>
@@ -18,8 +20,8 @@ This application was bootstrapped with <a href="https://github.com/mherrmann/fbs
 Written entirely in Python3, Signalum Desktop has been designed for the following scenarios:
 
 - Basic wifi SSID and Bluetooth identification
+- Signal Visualization
 - Wifi and Bluetooth RSSI Values calculation
-- Bluetooth identification
 - Export - Ability to export values to excel worksheet
 
 
