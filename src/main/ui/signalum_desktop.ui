@@ -24,7 +24,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="adapterTab">
        <attribute name="title">
@@ -431,10 +431,10 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_12">
             <item>
-             <layout class="QVBoxLayout" name="wifiGraphToolbar"/>
+             <layout class="QVBoxLayout" name="wifiGraphLayout"/>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="wifiGraphLayout"/>
+             <layout class="QVBoxLayout" name="wifiGraphToolbar"/>
             </item>
            </layout>
           </widget>
