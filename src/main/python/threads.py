@@ -21,7 +21,8 @@ class Worker(QObject):
     def __init__(self, table_fn, object_name, refresh_rate):
         """
         """
-        QThread.__init__(self)
+        super(Worker, self).__init__()
+#         QThread.__init__(self)
         self.table_fn = table_fn
         self.setObjectName(object_name)
         self._continue = True

@@ -33,7 +33,7 @@ def calltracker(func):
 
 def is_running(func):
     """
-    Make a function dependent on a self.is_running
+    Executes a function only when the app is running
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -258,7 +258,7 @@ class PopUp(QtWidgets.QDialog):
     graph_handler = None
 
     def __init__(self, *args, **kwargs):
-        QtWidgets.QDialog.__init__(self)
+        super(PopUp, self).__init__()
         # no content on layout yet, so set flag to False
         self.has_content = False
         # tracks each device signal by it's unique MAC Address

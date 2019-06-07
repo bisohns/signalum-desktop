@@ -95,6 +95,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         self.bluetoothTable.cellClicked.connect(btPartial)
         self.wifiTable.cellClicked.connect(wfPartial)
+        # When new options are set. Reload UI
         self.options.settings_saved.connect(self.reload_ui)
 
     @QtCore.pyqtSlot()
@@ -378,21 +379,25 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """ Custom quit thread """
         if thread.isRunning():
             thread.quit
-        self.update_status("Stopped", color="red", timeout=0)
+        self.update_status("Stopped", color="red", timeout=10000)
 
     def closeEvent(self, event):
-        """ Custom close event handler """
+        """ 
+        Custom close event handler. Stops all running thread before quitting the application 
+        """
         self.stop()
         super(App, self).closeEvent(event)
 
     def update_status(self, message, color="green", timeout=5000):
-        """ Updates the Status Bar """
+        """ 
+        Updates the Status Bar 
+        """
         self.statusBar().setStyleSheet("color: %s" % color)
         self.statusBar().showMessage(message, timeout)
 
     def setup_dialog(self, dialog):
         """ 
-        Show a blocking dialog which prevents interaction with main window until closed 
+        sets up a dialog or another widget
         """
         _d = dialog()
         _d.setupUi(self)
