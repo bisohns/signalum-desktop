@@ -12,7 +12,8 @@ import widgets
 from qt import about, disabled_widget, options, signalum_desktop
 from threads import Worker
 from utils import (BluetoothProtocol, Graphing, PopUp, WifiProtocol,
-                   get_bluetooth_devices, get_wifi_devices, is_running)
+                   get_bluetooth_devices, get_wifi_devices)
+from utils import is_running as running
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -72,6 +73,13 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Configure Protocols
         self._bt_enabled = self.settings.value('bt', False, bool)
         self._wifi_enabled = self.settings.value('wf', False, bool)
+        self._dark_mode = self.settings.value('dark_mode', False, bool)
+        if self._dark_mode:
+            self.setStyleSheet(
+                "background-color: rgb(46, 52, 54);\n"
+                "color: rgb(255, 255, 255);")
+        else:
+            self.setStyleSheet("")
         # Bluetooth
         self.bt_graph_handler = self.configure_protocol(
             self.bluetoothGraphLayout, self.bluetoothGraphToolbar, BluetoothProtocol, self._bt_enabled)
@@ -256,7 +264,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         Configures a protocol for display if it has being enabled in settings 
         """
         if enabled:
-            graph_handler = Graphing(self, protocol=protocol)
+            color = None if not self._dark_mode else "#2e3436"
+            graph_handler = Graphing(self, protocol=protocol, color=color)
             graph_layout.addWidget(graph_handler.canvas)
             graph_toolbar.addWidget(graph_handler.toolbar)
             return graph_handler
@@ -306,7 +315,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             self.bt_worker = self.start_protocol_thread(
                 BluetoothProtocol, get_bluetooth_devices, self.bluetoothTable, bt_refresh_rate)
 
-    @is_running
+    @running
     def update_table(self, table, data):
         """
         Appends a data row to a QTableWidget
@@ -320,7 +329,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 _entry = QtWidgets.QTableWidgetItem(str(cell))
                 table.setItem(n, m, _entry)
 
-    @is_running
+    @running
     def update_graph(self, protocol, data):
         """
         Update graph

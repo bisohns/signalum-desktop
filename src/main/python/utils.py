@@ -3,8 +3,8 @@ import datetime as dt
 import functools
 import sys
 
-import numpy as np
 import matplotlib
+import numpy as np
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import \
@@ -97,9 +97,12 @@ def get_wifi_devices(parent, **kwargs):
 class Graphing:
     """ Coordinate details of matplotlib graphing """
 
-    def __init__(self, parent, protocol):
+    def __init__(self, parent, protocol, color=None):
         # TODO: create a ui to import the graph toolboxes
+        self.color = color
         self.fig = Figure()
+        if self.color:
+            self.fig.set_facecolor(self.color)
         self.canvas = FigureCanvas(self.fig)
         # set toolbar for canvas and bind toolbar to parent for render
         self.toolbar = NavigationToolbar(self.canvas, parent)
@@ -112,7 +115,8 @@ class Graphing:
 
         chartBox = self.dynamic_ax.get_position()
         # resize graph to 0.8 of origninal width to create space for external legend
-        self.dynamic_ax.set_position([chartBox.x0, chartBox.y0, chartBox.width*0.8, chartBox.height])
+        self.dynamic_ax.set_position(
+            [chartBox.x0, chartBox.y0, chartBox.width*0.8, chartBox.height])
         self.protocol = protocol
         self.configure_graph()
         # TODO: allow setting of graph color
@@ -129,7 +133,10 @@ class Graphing:
         """
         Configure range plot of device
         """
-        self.devaxcanvas = FigureCanvas(Figure())
+        self.devax_figure = Figure()
+        if self.color:
+            self.devax_figure.set_facecolor(self.color)
+        self.devaxcanvas = FigureCanvas(self.devax_figure)
         self.devax = self.devaxcanvas.figure.add_subplot(111, polar=True)
         self.devax.set_facecolor('black')
         self.devax.set_xticklabels([])
@@ -141,6 +148,8 @@ class Graphing:
         Graph needs to be configure to display appropriate data
         """
         self.dynamic_ax.clear()
+        if self.color:
+            self.dynamic_ax.set_facecolor(self.color)
         self.dynamic_ax.set_ylim(bottom=-100, top=0)
         # Set y-axis label
         if self.protocol.is_bt():
@@ -170,7 +179,7 @@ class Graphing:
             # list of rssi values will be plotted on the y axis
             y = np.array(i)
             y = y[self.limit:]
-            #append out of range to name
+            # append out of range to name
             if y[-1] == self.out_of_range:
                 device_name = device_name + "--OOR --"
             # check if points are enough to interpolate on
@@ -182,7 +191,8 @@ class Graphing:
             else:
                 self.dynamic_ax.plot(xs, y, label=device_name)
             # create legend outside plot
-            self.dynamic_ax.legend(loc='upper center', bbox_to_anchor=(1.1, 0.8), shadow=True, ncol=1)
+            self.dynamic_ax.legend(loc='upper center', bbox_to_anchor=(
+                1.1, 0.8), shadow=True, ncol=1)
         self.dynamic_ax.figure.canvas.draw()
 
     def update_data(self, data):
@@ -213,7 +223,7 @@ class Graphing:
         # append out of range values to those devices
         for i in no_val:
             self.signal_data[i].append(self.out_of_range)
-    
+
     def plot_device(self, mac):
         """
         Show plot of individual device
@@ -227,13 +237,15 @@ class Graphing:
         if signal <= 0 and signal >= -100:
             # convert signal to radius
             radius = 100 + signal
-            circle = matplotlib.patches.Circle((0, 0), radius=radius, transform=self.devax.transData._b, color="red", alpha=0.4)
+            circle = matplotlib.patches.Circle(
+                (0, 0), radius=radius, transform=self.devax.transData._b, color="red", alpha=0.4)
             self.devax.add_artist(circle)
             self.devax.set_xlabel(f"RSSI of {device} = {signal} ")
         else:
             self.devax.set_xlabel(f"{device} is out of range")
         self.devax.set_xticklabels([])
         self.devax.figure.canvas.draw()
+
 
 class PopUp(QtWidgets.QDialog):
     """
@@ -252,7 +264,7 @@ class PopUp(QtWidgets.QDialog):
         # tracks each device signal by it's unique MAC Address
         self.columname = "MAC Address"
         self.setLayout(QtWidgets.QVBoxLayout())
-    
+
     def add_content(self, content):
         """
         Add Canvas to PopUp's layout and set flag

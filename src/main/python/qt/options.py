@@ -55,7 +55,7 @@ class Ui_OptionsDialog(object):
         self.bluetoothSwitch.setObjectName("bluetoothSwitch")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.bluetoothSwitch)
         self.darkModeCheckBox = QtWidgets.QCheckBox(OptionsDialog)
-        self.darkModeCheckBox.setChecked(True)
+        self.darkModeCheckBox.setChecked(False)
         self.darkModeCheckBox.setObjectName("darkModeCheckBox")
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.darkModeCheckBox)
         self.verticalLayout.addLayout(self.formLayout)

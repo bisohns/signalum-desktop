@@ -38,6 +38,7 @@ class OptionsDialog(QtWidgets.QDialog, options.Ui_OptionsDialog):
         self.settings.setValue(
             'bt_services', self.showBluetoothServices.isChecked())
         self.settings.setValue('bt_names', self.showBluetoothNames.isChecked())
+        self.settings.setValue('dark_mode', self.darkModeCheckBox.isChecked())
         success = QtWidgets.QMessageBox.information(
             self, 'Signalum Desktop', 'Changes Saved Successfully')
         self.settings_saved.emit()
