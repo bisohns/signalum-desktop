@@ -23,7 +23,6 @@ Written entirely in Python3, Signalum Desktop has been designed for the followin
 - Export - Ability to export values to excel worksheet
 
 
-
 ### Development
 
 ```bash

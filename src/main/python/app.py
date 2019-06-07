@@ -8,11 +8,11 @@ import xlwt
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import qt.resources
+import widgets
 from qt import about, disabled_widget, options, signalum_desktop
 from threads import Worker
 from utils import (BluetoothProtocol, Graphing, PopUp, WifiProtocol,
                    get_bluetooth_devices, get_wifi_devices, is_running)
-from widgets import OptionsDialog, ProtocolMessageWidget
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -22,8 +22,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         super(App, self).__init__(parent=parent)
         # Setup All Uis
         self.setupUi(self)
-        self.options = OptionsDialog(self)
-        self.about = self.setup_dialog(about.Ui_Dialog)
+        self.options = widgets.OptionsDialog(self)
+        self.about = widgets.AboutDialog(self)
 
         # Define Some Actions
         self.playAction = self.create_action(
@@ -254,7 +254,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             graph_layout.addWidget(graph_handler.canvas)
             graph_toolbar.addWidget(graph_handler.toolbar)
             return graph_handler
-        msg_widget = ProtocolMessageWidget(self, protocol)
+        msg_widget = widgets.ProtocolMessageWidget(self, protocol)
         graph_layout.addWidget(msg_widget)
         return None
 

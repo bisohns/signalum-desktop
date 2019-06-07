@@ -45,13 +45,8 @@ class OptionsDialog(QtWidgets.QDialog, options.Ui_Dialog):
 
 
 class AboutDialog(QtWidgets.QDialog, about.Ui_Dialog):
-    """ Displays message notifications for protocol """
+    """ Displays the about Dialog"""
 
-    def __init__(self, parent=None, protocol='Bluetooth', custom_header="", custom_msg=""):
+    def __init__(self, parent=None):
         super(AboutDialog, self).__init__(parent=parent)
         self.setupUi(self)
-        if not custom_header:
-            self.MessageLabel.setText(str(protocol) + ' Mode is Disabled')
-        else:
-            self.MessageLabel.setText(custom_header)
-            self.MessageBodyLabel.setText(custom_msg)
