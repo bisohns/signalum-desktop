@@ -4,18 +4,15 @@ import sys
 import time
 from functools import partial
 
+import xlwt
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import signalum_qt.resources
-import xlwt
-from qt import disabled_widget, signalum_desktop
+import qt.resources
+from qt import about, disabled_widget, options, signalum_desktop
 from threads import Worker
-from utils import (BluetoothProtocol, Graphing, WifiProtocol,
-                   PopUp,
-                   get_bluetooth_devices, get_wifi_devices,
-                   is_running)
-from widgets import ProtocolMessageWidget
-
+from utils import (BluetoothProtocol, Graphing, PopUp, WifiProtocol,
+                   get_bluetooth_devices, get_wifi_devices, is_running)
+from widgets import OptionsDialog, ProtocolMessageWidget
 
 
 class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
@@ -23,14 +20,27 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(App, self).__init__(parent=parent)
+        # Setup All Uis
         self.setupUi(self)
+        self.options = OptionsDialog(self)
+        self.about = self.setup_dialog(about.Ui_Dialog)
 
         # Define Some Actions
         self.playAction = self.create_action(
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start/Continue Scanning')
         self.stopAction = self.create_action(
-            '&Stop...', self.stop, 'Ctrl + B', 'stop', 
-            'Stop/Pause Scanning')
+            '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop/Pause Scanning')
+
+        btExport = partial(self.exporter, self.bluetoothTable)
+        wfExport = partial(self.exporter, self.wifiTable)
+        # TODO implement save exports
+        self.actionSave.triggered.connect(lambda: None)
+        self.actionPreferences.triggered.connect(lambda: self.options.exec_())
+        self.actionDocumentation.triggered.connect(lambda: None)
+        self.actionAbout.triggered.connect(lambda: self.about.show())
+        self.actionQuit.triggered.connect(self.close)
+        self.actionExportWifi.triggered.connect(wfExport)
+        self.actionExportBluetooth.triggered.connect(btExport)
 
         self.actionToolBar = self.addToolBar('Action')
         self.actionToolBar.setObjectName('actionToolBar')
@@ -42,12 +52,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # popup
         self.popup = PopUp()
 
-        # get options tab index
-        self.optionsTabIndex = self.tabWidget.indexOf(self.optionsTab)
-
-        # configure export buttons
-        self.configure_export_buttons()
-
         # Configure Application Settings
         self.settings = QtCore.QSettings('BisonCorps', 'signalum')
         self._bt_enabled = False
@@ -55,22 +59,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # WARNING: Do not interchange the flow of the lines here-after because of data-dependency
         self.configure_application()
         self.load_initial_state()
-        self.saveOptionsButtonBox.accepted.connect(self.save_new_options)
 
         self.wf_worker = None
         self.bt_worker = None
         self.is_running = False
-
-    def configure_export_buttons(self):
-        """
-        Configure and connect the export buttons
-        """
-        btPartial = partial(self.exporter, self.bluetoothTable)
-        wfPartial = partial(self.exporter, self.wifiTable)
-        # connect save buttons to their tables
-        self.btExportButton.clicked.connect(btPartial)
-        self.wfExportButton.clicked.connect(wfPartial)
-
 
     def configure_application(self):
         """
@@ -85,13 +77,29 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # Wifi
         self.wf_graph_handler = self.configure_protocol(
             self.wifiGraphLayout, self.wifiGraphToolbar, WifiProtocol, self._wifi_enabled)
-        
+
         # connect tables to cellClick
-        btPartial = partial(self.cellClicked, self.bt_graph_handler, self.bluetoothTable)
-        wfPartial = partial(self.cellClicked, self.wf_graph_handler, self.wifiTable)
+        btPartial = partial(
+            self.cellClicked, self.bt_graph_handler, self.bluetoothTable)
+        wfPartial = partial(
+            self.cellClicked, self.wf_graph_handler, self.wifiTable)
 
         self.bluetoothTable.cellClicked.connect(btPartial)
         self.wifiTable.cellClicked.connect(wfPartial)
+        self.options.settings_saved.connect(self.reload_ui)
+
+    @QtCore.pyqtSlot()
+    def reload_ui(self):
+        """ 
+        Reload Application UI and protocol 
+        """
+        print("About to Reload UI")
+        self.settings = QtCore.QSettings('BisonCorps', 'signalum')
+        self.clear_layout(self.bluetoothGraphLayout)
+        self.clear_layout(self.wifiGraphLayout)
+        self.clear_layout(self.bluetoothGraphToolbar)
+        self.clear_layout(self.wifiGraphToolbar)
+        self.configure_application()
 
     def cellClicked(self, graph_handler, table, row, column):
         """
@@ -102,9 +110,10 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # set current device details for polar plot
         self.popup.table = table
         self.popup.row = row
-        self.popup.mac_address = self.getsamerowcell(table, row, self.popup.columname)
+        self.popup.mac_address = self.get_same_row_cell(
+            table, row, self.popup.columname)
         self.popup.graph_handler = graph_handler
-        print("Device %s was clicked" %self.popup.mac_address)
+        print("Device %s was clicked" % self.popup.mac_address)
         # avoid adding multiple content by checking axis
         if not self.popup.has_content:
             try:
@@ -114,11 +123,11 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 self.popup.graph_handler.configure_device_graph()
                 self.popup.add_content(self.popup.graph_handler.devaxcanvas)
         else:
-            print("Already has content", self.popup.graph_handler.devaxcanvas)     
+            print("Already has content", self.popup.graph_handler.devaxcanvas)
         self.popup.graph_handler.plot_device(self.popup.mac_address)
         self.popup.exec_()
 
-    def getsamerowcell(self, table, row, columname):
+    def get_same_row_cell(self, table, row, columname):
         """
         Retrieve text from particular column
         """
@@ -128,7 +137,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             if columname == headertext:
                 cell = table.item(row, x).text()
                 return cell
-
 
     def load_initial_state(self):
         """
@@ -140,12 +148,12 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         _bt_refresh_rate = self.settings.value('bt_ref_rate', 1, int)
         _wifi_refresh_rate = self.settings.value('wifi_ref_rate', 1, int)
         # Update UI with values
-        self.wifiSwitch.setChecked(self._wifi_enabled)
-        self.bluetoothSwitch.setChecked(self._bt_enabled)
-        self.bluetoothRefreshRate.setValue(_bt_refresh_rate)
-        self.wifiRefreshRate.setValue(_wifi_refresh_rate)
-        self.showBluetoothServices.setChecked(_show_bt_services)
-        self.showBluetoothNames.setChecked(_show_bt_names)
+        self.options.wifiSwitch.setChecked(self._wifi_enabled)
+        self.options.bluetoothSwitch.setChecked(self._bt_enabled)
+        self.options.bluetoothRefreshRate.setValue(_bt_refresh_rate)
+        self.options.wifiRefreshRate.setValue(_wifi_refresh_rate)
+        self.options.showBluetoothServices.setChecked(_show_bt_services)
+        self.options.showBluetoothNames.setChecked(_show_bt_names)
 
     def clear_layout(self, layout):
         """ 
@@ -161,13 +169,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         # use model to get table headers instead of table
         model = table.model()
         if not filename:
-            filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "signalum", '.xls(*.xls)')
+            filename = QtWidgets.QFileDialog.getSaveFileName(
+                self, "Save File", "signalum", '.xls(*.xls)')
         if filename:
             wb = xlwt.Workbook(filename)
             sheetbook = wb.add_sheet("sheet", cell_overwrite_ok=True)
             self.export(model, sheetbook)
             wb.save(filename[0])
-    
+
     def export(self, model, sheetbook):
         """
         Export from model data to a defined sheetbook
@@ -187,27 +196,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                     sheetbook.write(r+1, c+1, celltext)
                 except AttributeError:
                     pass
-
-    def save_new_options(self):
-        """
-        Saves the options to QSettings after the click of save Button
-        """
-        self.settings.setValue('bt', self.bluetoothSwitch.isChecked())
-        self.settings.setValue('wf', self.wifiSwitch.isChecked())
-        self.settings.setValue(
-            'bt_ref_rate', self.bluetoothRefreshRate.value())
-        self.settings.setValue('wifi_ref_rate', self.wifiRefreshRate.value())
-        self.settings.setValue(
-            'bt_services', self.showBluetoothServices.isChecked())
-        self.settings.setValue('bt_names', self.showBluetoothNames.isChecked())
-        success = QtWidgets.QMessageBox.information(
-            self, 'Signalum Desktop', 'Changes Saved Successfully')
-        # Reload Application UI and protocol
-        self.clear_layout(self.bluetoothGraphLayout)
-        self.clear_layout(self.wifiGraphLayout)
-        self.clear_layout(self.bluetoothGraphToolbar)
-        self.clear_layout(self.wifiGraphToolbar)
-        self.configure_application()
 
     def create_action(self, text, slot=None, shortcut=None, icon=None, tip=None,
                       checkable=False, signal='triggered'):
@@ -233,7 +221,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 target.addSeparator()
             else:
                 target.addAction(action)
-    
+
     def remove_actions(self, target, actions):
         """ Remove actions from a toolbar or menu """
         for action in actions:
@@ -241,7 +229,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 pass
             else:
                 target.removeAction(action)
-    
+
     def play_stop_transition(self, action="play", color="green"):
         """ Transition from remove_action to add_action """
         if action == "play":
@@ -257,7 +245,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             # enable options tab during stop
             self.tabWidget.setTabEnabled(self.optionsTabIndex, True)
         # change color of actionToolbar
-        self.actionToolBar.setStyleSheet("background-color: %s" %color)
+        self.actionToolBar.setStyleSheet("background-color: %s" % color)
 
     def configure_protocol(self, graph_layout, graph_toolbar, protocol, enabled=False):
         """ Configures a protocol for display if it has being enabled in settings """
@@ -366,7 +354,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 self.bt_worker.stop_action()
             if self.wf_worker:
                 self.wf_worker.stop_action()
-            self.update_status('Stopping, may take a while...', color=stop_color)
+            self.update_status(
+                'Stopping, may take a while...', color=stop_color)
             self.is_running = False
             self.play_stop_transition(action="stop", color=stop_color)
 
@@ -383,5 +372,13 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def update_status(self, message, color="green", timeout=5000):
         """ Updates the Status Bar """
-        self.statusBar().setStyleSheet("color: %s" %color)
+        self.statusBar().setStyleSheet("color: %s" % color)
         self.statusBar().showMessage(message, timeout)
+
+    def setup_dialog(self, dialog):
+        """ 
+        Show a blocking dialog which prevents interaction with main window until closed 
+        """
+        _d = dialog()
+        _d.setupUi(self)
+        return _d

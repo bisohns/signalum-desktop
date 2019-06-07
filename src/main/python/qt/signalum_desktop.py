@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './signalum_desktop.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -128,12 +128,21 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 128))
+        brush.setStyle(QtCore.Qt.NoBrush)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.PlaceholderText, brush)
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 128))
+        brush.setStyle(QtCore.Qt.NoBrush)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.PlaceholderText, brush)
         brush = QtGui.QBrush(QtGui.QColor(190, 190, 190))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 128))
+        brush.setStyle(QtCore.Qt.NoBrush)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         self.graphTab.setPalette(palette)
         self.graphTab.setObjectName("graphTab")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.graphTab)
@@ -200,20 +209,14 @@ class Ui_MainWindow(object):
         self.line_14.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_14.setObjectName("line_14")
         self.verticalLayout_3.addWidget(self.line_14)
-        self.formLayout_6 = QtWidgets.QFormLayout()
-        self.formLayout_6.setObjectName("formLayout_6")
-        self.label_8 = QtWidgets.QLabel(self.devicesTab)
-        self.label_8.setObjectName("label_8")
-        self.formLayout_6.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_8)
-        self.wfExportButton = QtWidgets.QPushButton(self.devicesTab)
-        self.wfExportButton.setObjectName("wfExportButton")
-        self.formLayout_6.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.wfExportButton)
-        self.verticalLayout_3.addLayout(self.formLayout_6)
         self.line_11 = QtWidgets.QFrame(self.devicesTab)
         self.line_11.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_11.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_11.setObjectName("line_11")
         self.verticalLayout_3.addWidget(self.line_11)
+        self.label_8 = QtWidgets.QLabel(self.devicesTab)
+        self.label_8.setObjectName("label_8")
+        self.verticalLayout_3.addWidget(self.label_8)
         self.wifiTable = QtWidgets.QTableWidget(self.devicesTab)
         self.wifiTable.setObjectName("wifiTable")
         self.wifiTable.setColumnCount(8)
@@ -244,14 +247,11 @@ class Ui_MainWindow(object):
         self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_7.setObjectName("line_7")
         self.verticalLayout_3.addWidget(self.line_7)
-        self.formLayout_7 = QtWidgets.QFormLayout()
-        self.formLayout_7.setObjectName("formLayout_7")
         self.label_9 = QtWidgets.QLabel(self.devicesTab)
         self.label_9.setObjectName("label_9")
-        self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_9)
-        self.btExportButton = QtWidgets.QPushButton(self.devicesTab)
-        self.btExportButton.setObjectName("btExportButton")
-        self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.btExportButton)
+        self.verticalLayout_3.addWidget(self.label_9)
+        self.formLayout_7 = QtWidgets.QFormLayout()
+        self.formLayout_7.setObjectName("formLayout_7")
         self.verticalLayout_3.addLayout(self.formLayout_7)
         self.line_8 = QtWidgets.QFrame(self.devicesTab)
         self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
@@ -284,121 +284,54 @@ class Ui_MainWindow(object):
         self.line_6.setObjectName("line_6")
         self.verticalLayout_3.addWidget(self.line_6)
         self.tabWidget.addTab(self.devicesTab, "")
-        self.optionsTab = QtWidgets.QWidget()
-        self.optionsTab.setObjectName("optionsTab")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.optionsTab)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.formLayout = QtWidgets.QFormLayout()
-        self.formLayout.setFieldGrowthPolicy(QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
-        self.formLayout.setObjectName("formLayout")
-        self.showBluetoothServices = QtWidgets.QCheckBox(self.optionsTab)
-        self.showBluetoothServices.setObjectName("showBluetoothServices")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.showBluetoothServices)
-        self.showBluetoothNames = QtWidgets.QCheckBox(self.optionsTab)
-        self.showBluetoothNames.setChecked(True)
-        self.showBluetoothNames.setObjectName("showBluetoothNames")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.showBluetoothNames)
-        self.label_2 = QtWidgets.QLabel(self.optionsTab)
-        self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_2)
-        self.bluetoothRefreshRate = QtWidgets.QSpinBox(self.optionsTab)
-        self.bluetoothRefreshRate.setMinimum(1)
-        self.bluetoothRefreshRate.setMaximum(60)
-        self.bluetoothRefreshRate.setSingleStep(1)
-        self.bluetoothRefreshRate.setProperty("value", 1)
-        self.bluetoothRefreshRate.setObjectName("bluetoothRefreshRate")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.bluetoothRefreshRate)
-        self.label_7 = QtWidgets.QLabel(self.optionsTab)
-        self.label_7.setObjectName("label_7")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_7)
-        self.wifiRefreshRate = QtWidgets.QSpinBox(self.optionsTab)
-        self.wifiRefreshRate.setMinimum(1)
-        self.wifiRefreshRate.setMaximum(60)
-        self.wifiRefreshRate.setSingleStep(1)
-        self.wifiRefreshRate.setProperty("value", 1)
-        self.wifiRefreshRate.setObjectName("wifiRefreshRate")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.wifiRefreshRate)
-        self.wifiSwitch = QtWidgets.QCheckBox(self.optionsTab)
-        self.wifiSwitch.setEnabled(True)
-        self.wifiSwitch.setChecked(False)
-        self.wifiSwitch.setObjectName("wifiSwitch")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.wifiSwitch)
-        self.bluetoothSwitch = QtWidgets.QCheckBox(self.optionsTab)
-        self.bluetoothSwitch.setChecked(False)
-        self.bluetoothSwitch.setObjectName("bluetoothSwitch")
-        self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.bluetoothSwitch)
-        self.verticalLayout_4.addLayout(self.formLayout)
-        self.verticalLayout_5.addLayout(self.verticalLayout_4)
-        self.saveOptionsButtonBox = QtWidgets.QDialogButtonBox(self.optionsTab)
-        self.saveOptionsButtonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
-        self.saveOptionsButtonBox.setCenterButtons(True)
-        self.saveOptionsButtonBox.setObjectName("saveOptionsButtonBox")
-        self.verticalLayout_5.addWidget(self.saveOptionsButtonBox)
-        self.verticalLayout_12 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.verticalLayout_5.addLayout(self.verticalLayout_12)
-        self.tabWidget.addTab(self.optionsTab, "")
-        self.About = QtWidgets.QWidget()
-        self.About.setObjectName("About")
-        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.About)
-        self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.textEdit = QtWidgets.QTextEdit(self.About)
-        self.textEdit.setObjectName("textEdit")
-        self.verticalLayout_9.addWidget(self.textEdit)
-        self.line_9 = QtWidgets.QFrame(self.About)
-        self.line_9.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_9.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_9.setObjectName("line_9")
-        self.verticalLayout_9.addWidget(self.line_9)
-        self.label_6 = QtWidgets.QLabel(self.About)
-        self.label_6.setObjectName("label_6")
-        self.verticalLayout_9.addWidget(self.label_6)
-        self.line_10 = QtWidgets.QFrame(self.About)
-        self.line_10.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_10.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_10.setObjectName("line_10")
-        self.verticalLayout_9.addWidget(self.line_10)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.textEdit_2 = QtWidgets.QTextEdit(self.About)
-        self.textEdit_2.setObjectName("textEdit_2")
-        self.horizontalLayout.addWidget(self.textEdit_2)
-        self.textEdit_3 = QtWidgets.QTextEdit(self.About)
-        self.textEdit_3.setEnabled(True)
-        self.textEdit_3.setObjectName("textEdit_3")
-        self.horizontalLayout.addWidget(self.textEdit_3)
-        self.textEdit_4 = QtWidgets.QTextEdit(self.About)
-        self.textEdit_4.setObjectName("textEdit_4")
-        self.horizontalLayout.addWidget(self.textEdit_4)
-        self.line_12 = QtWidgets.QFrame(self.About)
-        self.line_12.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_12.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_12.setObjectName("line_12")
-        self.horizontalLayout.addWidget(self.line_12)
-        self.textEdit_5 = QtWidgets.QTextEdit(self.About)
-        self.textEdit_5.setObjectName("textEdit_5")
-        self.horizontalLayout.addWidget(self.textEdit_5)
-        self.line_13 = QtWidgets.QFrame(self.About)
-        self.line_13.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_13.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_13.setObjectName("line_13")
-        self.horizontalLayout.addWidget(self.line_13)
-        self.verticalLayout_9.addLayout(self.horizontalLayout)
-        self.tabWidget.addTab(self.About, "")
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 756, 22))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 756, 22))
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuExport = QtWidgets.QMenu(self.menuFile)
+        self.menuExport.setObjectName("menuExport")
+        self.menuPreferences = QtWidgets.QMenu(self.menubar)
+        self.menuPreferences.setObjectName("menuPreferences")
+        self.menuAbout = QtWidgets.QMenu(self.menubar)
+        self.menuAbout.setObjectName("menuAbout")
+        MainWindow.setMenuBar(self.menubar)
+        self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.setShortcutContext(QtCore.Qt.WidgetWithChildrenShortcut)
+        self.actionSave.setObjectName("actionSave")
+        self.actionPreferences = QtWidgets.QAction(MainWindow)
+        self.actionPreferences.setObjectName("actionPreferences")
+        self.actionDocumentation = QtWidgets.QAction(MainWindow)
+        self.actionDocumentation.setObjectName("actionDocumentation")
+        self.actionAbout = QtWidgets.QAction(MainWindow)
+        self.actionAbout.setObjectName("actionAbout")
+        self.actionQuit = QtWidgets.QAction(MainWindow)
+        self.actionQuit.setObjectName("actionQuit")
+        self.actionExportWifi = QtWidgets.QAction(MainWindow)
+        self.actionExportWifi.setObjectName("actionExportWifi")
+        self.actionExportBluetooth = QtWidgets.QAction(MainWindow)
+        self.actionExportBluetooth.setObjectName("actionExportBluetooth")
+        self.menuExport.addAction(self.actionExportWifi)
+        self.menuExport.addAction(self.actionExportBluetooth)
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.menuExport.menuAction())
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionQuit)
+        self.menuPreferences.addAction(self.actionPreferences)
+        self.menuAbout.addAction(self.actionDocumentation)
+        self.menuAbout.addSeparator()
+        self.menuAbout.addAction(self.actionAbout)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuPreferences.menuAction())
+        self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -453,7 +386,6 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Bluetooth Devices"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.graphTab), _translate("MainWindow", "Signal Graph"))
         self.label_8.setText(_translate("MainWindow", "Wifi Table"))
-        self.wfExportButton.setText(_translate("MainWindow", "Save To Excel"))
         self.wifiTable.setSortingEnabled(True)
         item = self.wifiTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Name"))
@@ -472,7 +404,6 @@ class Ui_MainWindow(object):
         item = self.wifiTable.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "Channel"))
         self.label_9.setText(_translate("MainWindow", "Bluetooth Table"))
-        self.btExportButton.setText(_translate("MainWindow", "Save To Excel"))
         self.bluetoothTable.setSortingEnabled(True)
         item = self.bluetoothTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Device"))
@@ -487,64 +418,16 @@ class Ui_MainWindow(object):
         item = self.bluetoothTable.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Services"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.devicesTab), _translate("MainWindow", "Devices"))
-        self.showBluetoothServices.setText(_translate("MainWindow", "Show bluetooth services"))
-        self.showBluetoothNames.setText(_translate("MainWindow", "Show bluetooth names"))
-        self.label_2.setText(_translate("MainWindow", "Bluetooth Device Refresh rate (sec)"))
-        self.label_7.setText(_translate("MainWindow", "WiFi Device Refresh rate (sec)"))
-        self.wifiSwitch.setText(_translate("MainWindow", "Turn Wifi on"))
-        self.bluetoothSwitch.setText(_translate("MainWindow", "Turn Bluetooth on"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.optionsTab), _translate("MainWindow", "Options"))
-        self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">About Signalum Desktop</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://bisoncorps.github.io/signalum-desktop/\"><span style=\" font-style:italic; text-decoration: underline; color:#f57900;\">Signalum Desktop</span></a> is the official desktop application surrounding the python <span style=\" font-weight:600; font-style:italic;\">signalum</span> library. It was created out of the neccessity of lack of a GUI tool that featured real-time simultaneous signal details of wifi and bluetooth signals.</p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/bisoncorps/signalum-desktop\"><span style=\" text-decoration: underline; color:#f57900;\">Github</span></a></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/bisoncorps/signalum-desktop/issues\"><span style=\" text-decoration: underline; color:#f57900;\">Report Issues</span></a></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://bisoncorps.github.io/signalum/\"><span style=\" text-decoration: underline; color:#f57900;\">Python Library</span></a></p></body></html>"))
-        self.label_6.setText(_translate("MainWindow", "Development Team"))
-        self.textEdit_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Mmadu Manasseh</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Python, React, C++ Developer</p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://mensaah.github.io\"><span style=\" text-decoration: underline; color:#f57900;\">Website</span></a></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/MensaaH\"><span style=\" text-decoration: underline; color:#f57900;\">Github</span></a></p></body></html>"))
-        self.textEdit_3.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Diretnan Domnan</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Python Developer and AI Engineer</p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://diretnandomnan.webnode.com\"><span style=\" text-decoration: underline; color:#f57900;\">Website</span></a></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/deven96\"><span style=\" text-decoration: underline; color:#f57900;\">Github</span></a></p></body></html>"))
-        self.textEdit_4.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Wisdom Praise</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Java, Android and React Developer</p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://wizzywit.github.io\"><span style=\" text-decoration: underline; color:#f57900;\">Website</span></a></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/wizzywit\"><span style=\" text-decoration: underline; color:#f57900;\">Github</span></a></p></body></html>"))
-        self.textEdit_5.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Engr. Ajao Lukman</span></p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Engineer and Lead Technologist at Computer Engineering Department, Federal University Of Technology, Minna, Nigeria</p>\n"
-"<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"contact\"><span style=\" text-decoration: underline; color:#f57900;\">Contact</span></a></p></body></html>"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.About), _translate("MainWindow", "About"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuExport.setTitle(_translate("MainWindow", "Export"))
+        self.menuPreferences.setTitle(_translate("MainWindow", "Settings"))
+        self.menuAbout.setTitle(_translate("MainWindow", "Help"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionPreferences.setText(_translate("MainWindow", "Preferences"))
+        self.actionDocumentation.setText(_translate("MainWindow", "Documentation"))
+        self.actionAbout.setText(_translate("MainWindow", "About Signalum"))
+        self.actionQuit.setText(_translate("MainWindow", "Quit"))
+        self.actionExportWifi.setText(_translate("MainWindow", "WiFi"))
+        self.actionExportBluetooth.setText(_translate("MainWindow", "Bluetooth"))
 
 
