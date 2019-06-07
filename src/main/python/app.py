@@ -25,6 +25,11 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.options = widgets.OptionsDialog(self)
         self.about = widgets.AboutDialog(self)
 
+        # Application instance Dependent Variables
+        self.wf_worker = None
+        self.bt_worker = None
+        self.is_running = False
+
         # Define Some Actions
         self.playAction = self.create_action(
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start/Continue Scanning')
@@ -60,10 +65,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         self.configure_application()
         self.load_initial_state()
 
-        self.wf_worker = None
-        self.bt_worker = None
-        self.is_running = False
-
     def configure_application(self):
         """
         Load up the application Config and UI
@@ -93,7 +94,6 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         """ 
         Reload Application UI and protocol 
         """
-        print("About to Reload UI")
         self.settings = QtCore.QSettings('BisonCorps', 'signalum')
         self.clear_layout(self.bluetoothGraphLayout)
         self.clear_layout(self.wifiGraphLayout)
@@ -199,7 +199,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
     def create_action(self, text, slot=None, shortcut=None, icon=None, tip=None,
                       checkable=False, signal='triggered'):
-        """ Creates an Action """
+        """ 
+        Creates a QAction 
+        """
         action = QtWidgets.QAction(text, self)
         if icon is not None:
             action.setIcon(QtGui.QIcon(':/%s.png' % icon))
@@ -215,7 +217,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         return action
 
     def add_actions(self, target, actions):
-        """ Add action to a toolbar or menu """
+        """ 
+        Add action to a toolbar or menu 
+        """
         for action in actions:
             if action is None:
                 target.addSeparator()
@@ -223,7 +227,9 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 target.addAction(action)
 
     def remove_actions(self, target, actions):
-        """ Remove actions from a toolbar or menu """
+        """ 
+        Remove actions from a toolbar or menu 
+        """
         for action in actions:
             if action is None:
                 pass
@@ -231,24 +237,24 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 target.removeAction(action)
 
     def play_stop_transition(self, action="play", color="green"):
-        """ Transition from remove_action to add_action """
+        """ 
+        Transition from remove_action to add_action 
+        """
         if action == "play":
             self.remove_actions(self.actionToolBar, (self.playAction, ))
             self.add_actions(self.actionToolBar, (self.stopAction, ))
-            if self.tabWidget.currentIndex() == self.optionsTabIndex:
-                self.tabWidget.setCurrentIndex(2)
-            # disable options tab during run
-            self.tabWidget.setTabEnabled(self.optionsTabIndex, False)
+            self.actionPreferences.setEnabled(False)
         elif action == "stop":
             self.remove_actions(self.actionToolBar, (self.stopAction, ))
             self.add_actions(self.actionToolBar, (self.playAction, ))
-            # enable options tab during stop
-            self.tabWidget.setTabEnabled(self.optionsTabIndex, True)
+            self.actionPreferences.setEnabled(True)
         # change color of actionToolbar
         self.actionToolBar.setStyleSheet("background-color: %s" % color)
 
     def configure_protocol(self, graph_layout, graph_toolbar, protocol, enabled=False):
-        """ Configures a protocol for display if it has being enabled in settings """
+        """ 
+        Configures a protocol for display if it has being enabled in settings 
+        """
         if enabled:
             graph_handler = Graphing(self, protocol=protocol)
             graph_layout.addWidget(graph_handler.canvas)

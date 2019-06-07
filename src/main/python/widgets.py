@@ -18,7 +18,7 @@ class ProtocolMessageWidget(QtWidgets.QWidget, disabled_widget.Ui_Form):
             self.MessageBodyLabel.setText(custom_msg)
 
 
-class OptionsDialog(QtWidgets.QDialog, options.Ui_Dialog):
+class OptionsDialog(QtWidgets.QDialog, options.Ui_OptionsDialog):
     settings_saved = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -44,7 +44,7 @@ class OptionsDialog(QtWidgets.QDialog, options.Ui_Dialog):
         super(OptionsDialog, self).accept()
 
 
-class AboutDialog(QtWidgets.QDialog, about.Ui_Dialog):
+class AboutDialog(QtWidgets.QDialog, about.Ui_AboutDialog):
     """ Displays the about Dialog"""
 
     def __init__(self, parent=None):
