@@ -46,17 +46,13 @@ def is_running(func):
 @calltracker
 def exit_error_msg(parent, title, message):
     """ A customization of QtMessageBox to exit the application after display """
-    # block signals from all threads
-    parent.blockSignals(True)
-    parent.get_bt_thread.blockSignals(True)
-    parent.get_wf_thread.blockSignals(True)
     # create an error message box and display
     msgBox = QtWidgets.QMessageBox()
     msgBox.setText(message)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msgBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
     msgBox.exec_()
-    sys.exit(parent)
+#     sys.exit(parent)
 
 
 def get_bluetooth_devices(parent, **kwargs):
@@ -67,13 +63,7 @@ def get_bluetooth_devices(parent, **kwargs):
     kwargs['analyze_all'] = True
     kwargs['graph'] = False
     kwargs['color'] = False
-    try:
-        bt_devices = bt.bluelyze(**kwargs)
-    except AdapterUnaccessibleError:
-        exit_error_msg(parent, "Bluetooth Adapter Unaccessible",
-                       "Closing application, restart application with enabled bluetooth adapter")
-    else:
-        return bt_devices
+    return bt.bluelyze(**kwargs)
 
 
 def get_wifi_devices(parent, **kwargs):

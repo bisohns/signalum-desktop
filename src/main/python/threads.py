@@ -18,15 +18,15 @@ class Worker(QObject):
     sig = pyqtSignal(list)
     finished = pyqtSignal()
 
-    def __init__(self, table_fn, object_name, refresh_rate):
+    def __init__(self, table_fn, object_name, refresh_rate, protocol):
         """
         """
         super(Worker, self).__init__()
-#         QThread.__init__(self)
         self.table_fn = table_fn
         self.setObjectName(object_name)
         self._continue = True
         self.refresh_rate = refresh_rate
+        self.protocol = protocol
 
     @pyqtSlot()
     def operate(self):
@@ -41,16 +41,23 @@ class Worker(QObject):
         if not self._continue:
             self.timer.stop()
             self.finished.emit()
-        # For cases where the adapter is off. No readings are return
-        try:
-            values, _ = self.table_fn.__call__()
-        except (ValueError, TypeError):
-            pass
         else:
-            if not values:
-                values = []
-            print(values)
-            self.sig.emit(values)
+            # For cases where the adapter is off. No readings are return
+            try:
+                values, _ = self.table_fn.__call__()
+            except AdapterUnaccessibleError:
+                exit_error_msg(None, f"{self.protocol} Adapter Unaccessible",
+                               f"Enable your {self.protocol} adapter and restart sensing."
+                               f"You can deactivate the {self.protocol} sensing in your settings"
+                               "if adapter is not available")
+                self._continue = False
+            except (ValueError, TypeError):
+                pass
+            else:
+                if not values:
+                    values = []
+                print(values)
+                self.sig.emit(values)
 
     def stop_action(self):
         self._continue = False
