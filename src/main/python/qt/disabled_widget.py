@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './disabled_widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.1
+# Created by: PyQt5 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 

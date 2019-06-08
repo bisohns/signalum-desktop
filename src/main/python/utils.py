@@ -124,14 +124,15 @@ class Graphing:
         Configure range plot of device
         """
         self.devax_figure = Figure()
-        if self.color:
-            self.devax_figure.set_facecolor(self.color)
         self.devaxcanvas = FigureCanvas(self.devax_figure)
         self.devax = self.devaxcanvas.figure.add_subplot(111, polar=True)
-        self.devax.set_facecolor('black')
         self.devax.set_xticklabels([])
         self.devax.set_rmin(-100)
         self.devax.cla()
+        if self.color:
+            self.devax_figure.set_facecolor(self.color)
+            self.devax.set_facecolor('black')
+            self.devax.xaxis.grid(True,color='white',linestyle='-')
 
     def configure_graph(self):
         """ 
@@ -218,7 +219,7 @@ class Graphing:
         """
         Show plot of individual device
         """
-        # self.configure_device_graph()
+        # configure dark mode
         signal = self.signal_data[mac][-1]
         device = self.name_data[mac]
         print(signal, device)

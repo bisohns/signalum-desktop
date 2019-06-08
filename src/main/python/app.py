@@ -182,7 +182,7 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
         model = table.model()
         if not filename:
             filename = QtWidgets.QFileDialog.getSaveFileName(
-                self, "Save File", "signalum", '.xls(*.xls)')
+                self, "Save File", "signalum.xlsx", '(*.xlsx)')
         if filename:
             wb = xlwt.Workbook(filename)
             sheetbook = wb.add_sheet("sheet", cell_overwrite_ok=True)
