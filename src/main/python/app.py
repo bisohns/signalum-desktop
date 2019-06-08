@@ -36,6 +36,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
             '&Play...', self.start, 'Ctrl + P', 'start', 'Start/Continue Scanning')
         self.stopAction = self.create_action(
             '&Stop...', self.stop, 'Ctrl + B', 'stop', 'Stop/Pause Scanning')
+        self.restartAction = self.create_action(
+            '&Stop...', self.restart, 'Ctrl + R', 'restart', 'Restart Scanning')
 
         btExport = partial(self.exporter, self.bluetoothTable)
         wfExport = partial(self.exporter, self.wifiTable)
@@ -50,7 +52,8 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
 
         self.actionToolBar = self.addToolBar('Action')
         self.actionToolBar.setObjectName('actionToolBar')
-        self.add_actions(self.actionToolBar, (self.playAction, ))
+        self.add_actions(self.actionToolBar,
+                         (self.playAction, self.restartAction))
         status = self.statusBar()
         status.setSizeGripEnabled(False)
         status.showMessage('Ready', 5000)
@@ -374,6 +377,14 @@ class App(QtWidgets.QMainWindow, signalum_desktop.Ui_MainWindow):
                 'Stopping, may take a while...', color=stop_color)
             self.is_running = False
             self.play_stop_transition(action="stop", color=stop_color)
+
+    def restart(self):
+        """
+        Restarts the sensing process
+        """
+        self.update_status('Restarting...')
+        self.stop()
+        self.start()
 
     def custom_quit(self, thread):
         """ Custom quit thread """
